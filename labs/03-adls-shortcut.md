@@ -14,8 +14,6 @@ ADLS Gen2 + CSV + 共有接続  ──→   共有接続でショートカット
 > ✅ **このラボに Azure の権限（サブスクリプションの RBAC）は不要です。**
 > ADLS Gen2 ストレージ・Service Principal・Fabric 接続（Connection）は **講師が 1 か所にまとめて作成・共有済み**です。
 > 受講者は **Fabric 側でショートカットを作るだけ**。`az storage account create` などの Azure 操作は行いません。
->
-> （講師がどう準備したかは末尾の [📦 付録: 講師による事前準備](#-付録-講師による事前準備実施済み) を参照）
 
 ---
 
@@ -265,17 +263,6 @@ LIMIT 10
 
 ---
 
-## 3-7. （クリーンアップ）ショートカットを削除する
-
-不要になったショートカットを削除できます（**ショートカットを消しても元の共有 ADLS のデータは残ります**）。
-
-> 🗣️ **プロンプト**
-> ```text
-> taxi_lakehouse にある taxi_zone ショートカットを削除して。
-> ```
-
----
-
 ## 🔍 （参考）裏側で実行されるコマンド
 
 ```bash
@@ -303,11 +290,6 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/
 az rest --method get \
   --resource "https://api.fabric.microsoft.com" \
   --url "https://api.fabric.microsoft.com/v1/workspaces/$WS_ID/items/$LH_ID/shortcuts"
-
-# ショートカット削除
-az rest --method delete \
-  --resource "https://api.fabric.microsoft.com" \
-  --url "https://api.fabric.microsoft.com/v1/workspaces/$WS_ID/items/$LH_ID/shortcuts/Files/taxi_zone"
 ```
 
 ---
@@ -335,90 +317,6 @@ az rest --method delete \
 
 > ℹ️ ストレージ作成・SP 作成・接続作成は**講師が実施済み**のため、受講者がそれらでエラーになることはありません。
 > もし「ストレージを作って」等の Azure 操作を促された場合は、このラボでは不要です（共有接続を使ってください）。
-
----
-
-## 📦 付録: 講師による事前準備（実施済み）
-
-> 受講者は実施不要です。**講師が 1 回だけ**以下を作成し、接続を全受講者に共有しています。
-> 受講者に Azure サブスクリプションの RBAC を配らずに済むため、権限管理がシンプルになります。
-
-### A. ADLS Gen2 ストレージアカウント作成（HNS 有効）
-
-```bash
-az storage account create \
-  --name st0taxihandson0616 --resource-group rg-fabric-handson \
-  --location japaneast --sku Standard_LRS --kind StorageV2 \
-  --enable-hierarchical-namespace true
-```
-
-### B. コンテナ作成と CSV アップロード
-
-> サブスクリプションのポリシーで `allowSharedKeyAccess=false`（キー認証禁止）のため、
-> **`--auth-mode login`（Entra 認証）**でアップロードします。事前に自分へ
-> `Storage Blob Data Contributor` ロールを付与しておきます。
-
-```bash
-az storage fs create --name taxi-data \
-  --account-name st0taxihandson0616 --auth-mode login
-
-az storage fs file upload \
-  --account-name st0taxihandson0616 --auth-mode login \
-  --file-system taxi-data --source ~/Downloads/Taxi_zone_lookup.csv \
-  --path Taxi_zone_lookup.csv
-```
-
-### C. Service Principal 作成 + ADLS 読み取り権限付与
-
-```bash
-az ad sp create-for-rbac --name sp-fabric-adls-handson \
-  --role "Storage Blob Data Reader" \
-  --scopes "/subscriptions/<SUB>/resourceGroups/rg-fabric-handson/providers/Microsoft.Storage/storageAccounts/st0taxihandson0616"
-# 出力の appId / password / tenant を控える
-```
-
-### D. Fabric 接続（Connection）を作成
-
-```json
-POST /v1/connections
-{
-  "connectivityType": "ShareableCloud",
-  "displayName": "adls-handson-sp-v3",
-  "connectionDetails": {
-    "type": "AzureDataLakeStorage",
-    "creationMethod": "AzureDataLakeStorage",
-    "parameters": [
-      { "dataType": "Text", "name": "server", "value": "https://st0taxihandson0616.dfs.core.windows.net" },
-      { "dataType": "Text", "name": "path",   "value": "taxi-data" }
-    ]
-  },
-  "credentialDetails": {
-    "singleSignOnType": "None",
-    "connectionEncryption": "NotEncrypted",
-    "credentials": {
-      "credentialType": "ServicePrincipal",
-      "servicePrincipalClientId": "<AppId>",
-      "servicePrincipalSecret": "<Secret>",
-      "tenantId": "<TenantId>"
-    }
-  }
-}
-```
-
-> 💡 **ポイント**: `creationMethod` は `connectionDetails` の**中**に入れます（外側は `InvalidParameter`）。
-> `connectivityType: ShareableCloud` にすることで、後から他ユーザーへ共有できます。
-
-### E. 接続を全受講者へ共有（User 権限）
-
-```bash
-# 各 studentX の AAD オブジェクトID に対して User ロールを付与
-curl -s -X POST -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
-  "https://api.fabric.microsoft.com/v1/connections/e580afe8-376d-43b2-8e03-192d031e782e/roleAssignments" \
-  -d '{"principal":{"id":"<studentXのoid>","type":"User"},"role":"User"}'
-```
-
-> これにより、各受講者は **ADLS への直接アクセス権なしで**、共有接続を使って
-> ショートカットを作成できます（接続が SP の資格情報を保持しているため）。
 
 ---
 
