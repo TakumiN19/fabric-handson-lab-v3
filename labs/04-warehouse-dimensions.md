@@ -129,6 +129,10 @@ dimension_taxiZoneLookup   265
 > 💡 **ポイント**: `[taxi_lakehouse].[dbo].[taxi_zone_lookup]` のように
 > **3パート名（アイテム名.dbo.テーブル名）** で同一ワークスペース内の Lakehouse を参照できます。
 
+> ⏳ **メモ（同期ラグ）**: `dimension_taxiZoneLookup` は Lakehouse の `taxi_zone_lookup` を参照します。
+> Lab 03 直後だと SQL Endpoint への同期ラグで `Invalid object name '...taxi_zone_lookup'` になることがあります。
+> その場合は「taxi_lakehouse の SQL Endpoint のメタデータを更新して」で同期してから実行してください。
+
 ---
 
 ## 4-3. ファクトテーブルを作成する
@@ -296,4 +300,4 @@ sqlcmd -S "$DW_SERVER" -d "taxi_warehouse" -G -i create_dimensions.sql -W
 
 ---
 
-次は **Lab 05 — セマンティックモデル作成**（準備中）に進みます。
+次は **Lab 05 — セマンティックモデル作成**（[05-semantic-model.md](05-semantic-model.md)）に進みます。

@@ -181,5 +181,5 @@ curl -s -H "Authorization: Bearer $TOKEN" "https://api.fabric.microsoft.com/v1/w
 
 ---
 
-次は **Lab 02 — Lakehouse のデータ探索**（準備中）に進みます。
+次は **Lab 02 — Lakehouse 作成・データ取り込み・変換**（[02-lakehouse-load-and-transform.md](02-lakehouse-load-and-transform.md)）に進みます。
 そこでも「テーブルを一覧して」「行数を数えて」のように、**プロンプトだけ**で進めます。

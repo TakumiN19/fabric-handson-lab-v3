@@ -40,7 +40,7 @@ Warehouse の `fact_greentrip_copilot` には datetime 型の列がないため�
 ### プロンプト例
 
 ```
-Livy セッションを使って、Lakehouse の green_tripdata テーブルから
+Livy セッションを使って、Lakehouse の green_tripdata_2026 テーブルから
 lpep_pickup_datetime を DATE/INT/STRING 型に変換した
 fact_greentrip_dates テーブルを作成して
 ```
@@ -50,13 +50,13 @@ fact_greentrip_dates テーブルを作成して
 ```python
 from pyspark.sql.functions import col, to_date, hour, date_format
 
-df = spark.sql("SELECT * FROM taxi_lakehouse.green_tripdata_2026")
+df = spark.table("green_tripdata_2026")
 df_dates = df.select(
     col("lpep_pickup_datetime").cast("timestamp").cast("date").alias("pickup_date"),
     hour(col("lpep_pickup_datetime").cast("timestamp")).alias("pickup_hour"),
     date_format(col("lpep_pickup_datetime").cast("timestamp"), "yyyy-MM").alias("pickup_month"),
     col("fare_amount"),
-    col("PUlocationID")
+    col("PULocationID")
 )
 df_dates.write.format("delta").mode("overwrite").saveAsTable("fact_greentrip_dates")
 ```
@@ -100,7 +100,7 @@ table fact_greentrip_dates
     column fare_amount
         dataType: decimal
 
-    column PUlocationID
+    column PULocationID
         dataType: int64
 
     measure 'Avg Fare' = AVERAGE(fact_greentrip_dates[fare_amount])
@@ -115,7 +115,7 @@ table fact_greentrip_dates
         formatString: \$#,##0.00
 
 relationship fact_greentrip_dates_to_zone
-    fromColumn: fact_greentrip_dates[PUlocationID]
+    fromColumn: fact_greentrip_dates[PULocationID]
     toColumn: dimension_taxiZoneLookup[LocationID]
 ```
 

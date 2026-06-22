@@ -165,6 +165,10 @@ SELECT COUNT(*) AS null_count FROM green_tripdata_2026 WHERE passenger_count IS 
 
 > 📌 `passenger_count IS NULL` が 0 件 → 変換が正しく適用されています。
 
+> ⏳ **メモ（同期ラグ）**: テーブル作成直後は SQL Endpoint へのメタデータ同期に
+> 数十秒〜数分かかることがあります。`Invalid object name 'green_tripdata_2026'` のような
+> エラーが出たら、「taxi_lakehouse の SQL Endpoint のメタデータを更新して」で同期してから再実行してください。
+
 ---
 
 ## 🔍 （参考）裏側で実行される処理
@@ -227,4 +231,4 @@ curl -s -X POST -H "Authorization: Bearer $FABRIC_TOKEN" -H "Content-Type: appli
 
 ---
 
-次は **Lab 03 — SQL Endpoint でデータ探索**（準備中）に進みます。
+次は **Lab 03 — ADLS Gen2 + OneLake ショートカット**（[03-adls-shortcut.md](03-adls-shortcut.md)）に進みます。

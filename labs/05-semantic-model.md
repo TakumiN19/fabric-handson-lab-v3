@@ -195,6 +195,12 @@ table fact_greentrip_copilot
 > - ディメンションのキー列は `summarizeBy: none`
 > - メジャーには `formatString` が必須
 
+> 🔌 **接続モード（import / DirectQuery）**: 上の例は `mode: import`（取り込み）です。
+> import は初回に Fabric Portal でデータソースの資格情報（組織アカウント）設定が必要です。
+> 一方、**Lab 06 では `mode: directQuery` を推奨**しています（ユーザーの Entra ID による SSO で
+> 自動認証され、資格情報設定が不要）。無人で完結させたい場合や、そのまま Lab 06 に進む場合は
+> **DirectQuery** を選ぶと設定がスムーズです。
+
 ---
 
 ## 5-3. Fabric Portal でモデルを確認する（任意）
@@ -248,4 +254,4 @@ table fact_greentrip_copilot
 
 ---
 
-次は **Lab 06 — Power BI レポート作成**（準備中）に進みます。
+次は **Lab 06 — Power BI レポート作成**（[06-powerbi-report.md](06-powerbi-report.md)）に進みます。
