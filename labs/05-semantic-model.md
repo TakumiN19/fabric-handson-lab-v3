@@ -17,6 +17,8 @@ TMDL ファイル作成  →  Fabric REST API でデプロイ  →  リレーシ
 
 ---
 
+> 📖 **分からない用語があれば** [用語集（Glossary）](glossary.md) で確認できます（Lakehouse・Delta・Livy・セマンティックモデル など）。
+
 ## セマンティックモデルとは？
 
 セマンティックモデルは Power BI のデータモデルです。

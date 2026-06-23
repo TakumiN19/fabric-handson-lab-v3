@@ -73,6 +73,7 @@ GitHub Copilot CLI と **skills-for-fabric** スキルを使って、Microsoft F
 | 08 | [Fabric App（ダッシュボード＋入力＋チャットボット）](labs/08-fabric-app.md) | Rayfin CLI で Fabric App を作成。`sm_taxi_warehouse` のダッシュボード＋入力フォーム（SQL DB→OneLake 自動ミラー）＋ `taxi_ride_agent` チャットドロワーを自分の WS にデプロイ | ✅ |
 | 09 | [付録: デジタル庁スタイルに作り直す](labs/09-appendix-digicho-dashboard-design.md) | （任意）乗車分析レポートをデジタル庁ダッシュボードデザインテンプレート（Blue）風に作り直す（左スライサー rail・青ヒーロー KPI 他）。前提: Lab 06 | ✅ |
 | 10 | [付録: Fabric App を UX デザインで作り直す](labs/10-rayfin-fabric-app-ux.md) | （任意）Lab 08 の Fabric App を独自デザインシステム（Midnight Dispatch）＋リッチな Recharts 可視化＋ゾーン注釈でデモ映えさせる。前提: Lab 08 | ✅ |
+| 📖 | [用語集（Glossary）](labs/glossary.md) | Lab 02〜10 に登場する Fabric/データ用語の早見表（定義＋本ハンズオンでの使われ方＋公式リンク） | ✅ |
 
 ---
 

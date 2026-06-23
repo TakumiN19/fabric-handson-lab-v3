@@ -28,6 +28,8 @@ Rayfin で App 作成  →  ダッシュボード  →  入力フォーム(SQL D
 
 ---
 
+> 📖 **分からない用語があれば** [用語集（Glossary）](glossary.md) で確認できます（Lakehouse・Delta・Livy・セマンティックモデル など）。
+
 ## 8-1. Rayfin CLI で Fabric App を作成してサインインする
 
 > 🗣️ **プロンプト**（`student<番号>` は自分のワークスペース名）

@@ -13,6 +13,8 @@ Warehouse 作成  →  ディメンションテーブル 5 本作成  →  フ�
 
 ---
 
+> 📖 **分からない用語があれば** [用語集（Glossary）](glossary.md) で確認できます（Lakehouse・Delta・Livy・セマンティックモデル など）。
+
 ## 4-1. Fabric Warehouse を作成する
 
 > 🗣️ **プロンプト**

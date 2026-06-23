@@ -17,6 +17,8 @@ ADLS Gen2 + CSV + 共有接続  ──→   共有接続でショートカット
 
 ---
 
+> 📖 **分からない用語があれば** [用語集（Glossary）](glossary.md) で確認できます（Lakehouse・Delta・Livy・セマンティックモデル など）。
+
 ## ショートカットとは？
 
 OneLake ショートカットは、**データをコピーせず**に別のストレージ（Azure・AWS・GCS 等）を
