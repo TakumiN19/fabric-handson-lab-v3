@@ -3,7 +3,7 @@
 所要時間: 約 15 分
 前提: [Lab 02](02-lakehouse-load-and-transform.md) 完了（自分の `studentX` ワークスペース／Lakehouse に接続済み）
 
-このラボでは、**講師が用意した共有の ADLS Gen2** に対して、各受講者が **OneLake ショートカット**を
+このラボでは、**講師が用意した共有の ADLS Gen2**〔Azure Data Lake Storage Gen2＝大容量データ向けストレージ〕 に対して、各受講者が **OneLake ショートカット**を
 張り、Fabric から直接データを参照します。
 
 ```
