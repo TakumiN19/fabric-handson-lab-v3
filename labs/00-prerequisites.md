@@ -12,9 +12,9 @@
 ハンズオン当日までに、以下をご準備ください。
 
 - **PC**: Webに接続可能なPCをご持参ください。プロキシ経由での接続などPCの設定により弊社ゲストWiFiに接続できない可能性がある場合は、ご自身のモバイルルーター等をご持参ください。
-- **Visual Studio Code**: インストールください。  
+- **Visual Studio Code**: インストールしてください。  
   [Visual Studio Code — ダウンロード](https://code.visualstudio.com/)
-- **Microsoft Authenticator**: スマートフォンにインストールください。  
+- **Microsoft Authenticator**: スマートフォンにインストールしてください。  
   [Microsoft Authenticator のダウンロード | Microsoft Support](https://support.microsoft.com/ja-jp/account-billing/microsoft-authenticator-%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89-351498fc-850a-45da-b7b6-27e523b8702a)
 - **GitHub アカウント**: ご自身のアカウントをご用意ください。GitHub Copilot 環境はご自身のアカウントの利用、もしくは当日に限り参加者アカウントへの弊社ライセンス付与を行います。弊社ライセンスの付与を希望される場合は、本リンクを送付した事前案内メールに記載の手順をご確認ください。  
   アカウントをお持ちでない場合は以下から作成できます。弊社ライセンスの付与を希望される場合は **EMUアカウントではなく個人アカウント** をご用意ください（EMUアカウントには付与できません）。  
@@ -38,7 +38,7 @@ python3 --version
 
 | ツール | 未インストール時の対処 |
 |--------|------------------------|
-| GitHub Copilot CLI | macOS: `brew install gh` → `gh extension install github/gh-copilot` / Windows: [winget](https://learn.microsoft.com/ja-jp/copilot/github-copilot/gh-copilot-cli) `winget install GitHub.cli` → `gh extension install github/gh-copilot` / [公式手順](https://docs.github.com/ja/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli) |
+| GitHub Copilot CLI | macOS/Linux: `brew install copilot-cli` / Windows: `winget install GitHub.Copilot`（PowerShell v6+）/ npm（全OS・Node.js 22+）: `npm install -g @github/copilot` / [公式手順](https://docs.github.com/ja/copilot/how-tos/set-up/install-copilot-cli) |
 | Azure CLI | macOS: `brew install azure-cli` / Windows: `winget install Microsoft.AzureCLI` / [公式手順](https://learn.microsoft.com/cli/azure/install-azure-cli) |
 | Python 3 | macOS には標準搭載。なければ `brew install python` / Windows: [python.org](https://www.python.org/downloads/) からインストーラーを実行 |
 
