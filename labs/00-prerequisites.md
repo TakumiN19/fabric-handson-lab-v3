@@ -23,7 +23,25 @@
 
 ---
 
-ターミナルで以下を実行し、いずれもバージョンが表示されることを確認します。
+## 0-2. VS Code を起動してターミナルを開く
+
+このハンズオンのコマンドは、すべて **VS Code の組み込みターミナル** で実行します。
+
+1. **VS Code を起動**します。
+   - Windows: スタートメニューで「Visual Studio Code」を検索して起動
+   - macOS: Launchpad またはアプリケーションフォルダーから「Visual Studio Code」を起動
+2. （任意）作業用のフォルダーを開きます: メニュー **ファイル > フォルダーを開く…**（File > Open Folder…）。
+3. **ターミナルを開きます**: メニュー **ターミナル > 新しいターミナル**（Terminal > New Terminal）を選択。
+   - ショートカット: <kbd>Ctrl</kbd>+<kbd>`</kbd>（バッククォート）。日本語キーボードでは <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>@</kbd> の場合があります。
+4. ウィンドウ下部に **ターミナルパネル** が開きます。以降のコマンドは、このターミナルに入力します。
+
+> 💡 既定のシェルは Windows なら PowerShell、macOS なら zsh です。本ハンズオンのコマンドはどちらでも実行できます。
+
+---
+
+## 0-3. ツールのバージョンを確認
+
+VS Code のターミナルで以下を実行し、いずれもバージョンが表示されることを確認します。
 
 ```bash
 # GitHub Copilot CLI
@@ -44,7 +62,7 @@ python3 --version
 
 ---
 
-## 0-2. skills-for-fabric プラグインの導入
+## 0-4. skills-for-fabric プラグインの導入
 
 GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加し、バンドルをインストールします。
 
