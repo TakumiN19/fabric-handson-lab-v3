@@ -1,4 +1,4 @@
-# Lab 07 — Data Agent 作成（プロンプト駆動）
+# Lab 07 — 付録：Data Agent 作成（プロンプト駆動）
 
 所要時間: 約 20 分
 前提: [Lab 05](05-semantic-model.md) 完了（`sm_taxi_warehouse` セマンティックモデルが自分の `student<番号>` ワークスペースに存在すること）
