@@ -219,7 +219,10 @@ agent.publish()                                         # 公開
 
 ## 🎉 おつかれさまでした！
 
-これで全ラボ（Lab 00〜07）が完了です。
+ここまでで Lab 00〜07 が完了です。
 GitHub Copilot CLI と `skills-for-fabric` を使い、**自然言語プロンプトだけ**で
 Lakehouse へのデータロード → ショートカット → Warehouse → セマンティックモデル →
 Power BI レポート → そして **会話型 AI（Data Agent）** までを一気通貫で構築しました 🚀
+
+> ➡️ 続いて **[Lab 08](08-fabric-app.md)** で、この Data Agent を組み込んだ
+> **Fabric App（ダッシュボード＋入力フォーム＋チャットボット）** を作ってデプロイします。

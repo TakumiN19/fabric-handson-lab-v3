@@ -26,6 +26,7 @@ GitHub Copilot CLI と **skills-for-fabric** スキルを使って、Microsoft F
 | Azure CLI (`az`) | Fabric への認証・トークン取得 | `az version` |
 | `skills-for-fabric` プラグイン | Fabric スキル群 | `/plugin list` |
 | Python 3 / `curl` | REST API 呼び出し・整形 | `python3 --version` |
+| Node.js v20+ | Fabric App（Lab 08, Rayfin CLI）の実行 | `node --version` |
 
 > 💡 Azure CLI が未インストールの場合: macOS は `brew install azure-cli`。
 
@@ -69,6 +70,8 @@ GitHub Copilot CLI と **skills-for-fabric** スキルを使って、Microsoft F
 | 05 | [セマンティックモデル作成](labs/05-semantic-model.md) | Warehouse テーブルからセマンティックモデル構築・リレーションシップ定義 | ✅ |
 | 06 | [Power BI レポート作成](labs/06-powerbi-report.md) | セマンティックモデルを使った多角分析レポート（5ビジュアル）を Fabric に公開 | ✅ |
 | 07 | [Data Agent 作成](labs/07-data-agent.md) | `sm_taxi_warehouse` に接続する会話型 AI（Data Agent）を作成・指示と代表質問5つを整備して公開 | ✅ |
+| 08 | [Fabric App（ダッシュボード＋入力＋チャットボット）](labs/08-fabric-app.md) | Rayfin CLI で Fabric App を作成。`sm_taxi_warehouse` のダッシュボード＋入力フォーム（SQL DB→OneLake 自動ミラー）＋ `taxi_ride_agent` チャットドロワーを自分の WS にデプロイ | ✅ |
+| 09 | [付録: デジタル庁スタイルに作り直す](labs/09-appendix-digicho-dashboard-design.md) | （任意）乗車分析レポートをデジタル庁ダッシュボードデザインテンプレート（Blue）風に作り直す（左スライサー rail・青ヒーロー KPI 他）。前提: Lab 06 | ✅ |
 
 ---
 
