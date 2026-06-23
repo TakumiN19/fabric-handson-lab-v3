@@ -4,14 +4,14 @@
 前提: [Lab 01](01-login-and-connect.md) 完了（自分の `student<番号>` ワークスペースに接続済み）
 
 このラボでは、自分のワークスペースに **Lakehouse を作成**し、Parquet ファイルを
-**Files にアップロード**したうえで、データ変換（列削除・null 除去）を行い
-**Delta テーブルとして保存**します。Lakehouse 作成・アップロード・PySpark 実行は
+**Files にアップロード**したうえで、データ変換（列削除・null〔欠損値〕除去）を行い
+**Delta テーブル**（更新・履歴に強いオープンなテーブル形式）**として保存**します。Lakehouse 作成・アップロード・PySpark 実行は
 Copilot CLI が自動で行うので、あなたがやるのは**プロンプトで指示するだけ**です。
 
 > 🤖 裏側では Fabric REST API（Lakehouse 作成）・OneLake DFS API（アップロード）・
 > **Livy API**（Spark セッション）が使われます。
 
-> 📦 取り込むサンプルデータは、クローンしたこのハンズオンリポジトリの
+> 📦 取り込むサンプルデータは、Lab 00 で用意したこのハンズオンリポジトリの
 > `data/green_tripdata_2026-04.parquet`（NYC グリーンタクシー風のサンプル・約 1.3 MB）です。
 
 ---
@@ -31,7 +31,7 @@ Copilot CLI が自動で行うので、あなたがやるのは**プロンプト
 | 層 | 役割 |
 |----|------|
 | 🥉 **Bronze**（Raw） | 生データをそのまま受け入れる（重複・品質不足を許容／公開前の状態） |
-| 🥈 **Silver**（Enrich） | クレンジング・重複排除・結合で「信頼できる形」に整える（Single Source of Truth） |
+| 🥈 **Silver**（Enrich） | クレンジング・重複排除・結合で「信頼できる形」に整える（Single Source of Truth＝信頼できる唯一の情報源） |
 | 🥇 **Gold**（Curate） | 分析・レポート用に集計・加工した「調整済みデータ」 |
 
 ### このハンズオンの進み方
@@ -45,12 +45,12 @@ Copilot CLI が自動で行うので、あなたがやるのは**プロンプト
 | ラボ | 何をするか |
 |------|-----------|
 | **Lab 02 / 03**（取り込み） | Parquet・CSV を Lakehouse に取り込みテーブル化（Lab 03 はショートカットで参照） |
-| **Lab 04**（変換） | GHC（GitHub Copilot）でデータを加工し、Warehouse にディメンション／ファクトを作成 |
+| **Lab 04**（変換） | GitHub Copilot でデータを加工し、Warehouse にディメンション／ファクトを作成 |
 | **Lab 05**（モデル） | 表示に必要な形へ整え、セマンティックモデルを構築 |
 | **Lab 06**（表示） | Power BI ダッシュボードで可視化（Consume） |
 
 > 💡 つまり「**生データ → 綺麗に整える → 結合・加工 → 表示**」という流れを、すべて **プロンプト駆動** で体験します
-> （データの加工・変換は GHC＝GitHub Copilot が自動で行います）。
+> （データの加工・変換は GitHub Copilot が自動で行います）。
 
 ---
 
@@ -74,7 +74,7 @@ Copilot CLI が自動で行うので、あなたがやるのは**プロンプト
 
 > 🗣️ **プロンプト**
 > ```text
-> クローンしたこのリポジトリの data/green_tripdata_2026-04.parquet を、
+> このリポジトリの data/green_tripdata_2026-04.parquet を、
 > taxi_lakehouse の Files/raw/ にアップロードして。
 > ```
 
