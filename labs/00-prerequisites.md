@@ -82,6 +82,13 @@ VS Code のターミナル（0-2）で GitHub Copilot CLI を起動し、GitHub 
 
 4. 画面の指示に従ってサインインします。ブラウザが開く（またはデバイスコードと URL `https://github.com/login/device` が表示される）ので、**ハンズオンで使う GitHub アカウント**で承認します。
 5. サインインが完了すると、プロンプトが使えるようになります。
+6. （推奨）使用するモデルを **Auto** にします。プロンプトで `/model` を実行し、一覧から **Auto** を選びます。
+
+   ```text
+   /model
+   ```
+
+   Auto は、タスクに応じて Copilot が最適なモデルを自動で選びます。起動時に `copilot --model auto` でも指定でき、設定は保存されて次回以降も有効です。
 
 > 💡 GitHub Copilot CLI の利用には **有効な GitHub Copilot サブスクリプション** が必要です（0-1 参照）。
 > CLI を終了するには、プロンプトで `/exit` を実行するか <kbd>Ctrl</kbd>+<kbd>C</kbd> を2回押します。
@@ -123,6 +130,7 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 
 - [ ] `copilot --version` / `az version` / `python3 --version` がすべて表示される
 - [ ] `copilot` を起動し、`/login` で GitHub アカウントにサインインできた
+- [ ] `/model` でモデルを **Auto** に設定した
 - [ ] `/plugin list` に `fabric-skills`（または `fabric-consumption`）が表示される
 
 すべて確認できたら **[Lab 01 — サインインとワークスペース接続](01-login-and-connect.md)** に進みます。
