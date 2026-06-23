@@ -23,14 +23,34 @@
 
 ---
 
-## 0-2. VS Code を起動してターミナルを開く
+## 0-2. ハンズオン教材を ZIP でダウンロードする
+
+ハンズオンの手順書とサンプルデータ（`data/` の Parquet ファイルなど）を、リポジトリごとローカルに用意します。
+
+1. ブラウザで教材リポジトリを開きます。
+   [https://github.com/TakumiN19/fabric-handson-lab](https://github.com/TakumiN19/fabric-handson-lab)
+2. 緑色の **「< > Code」** ボタンをクリックし、**「Download ZIP」** を選びます。
+3. ダウンロードした ZIP ファイルを、分かりやすい場所（デスクトップなど）に **展開（解凍）** します。
+   - Windows: ZIP を右クリック →「すべて展開」
+   - macOS: ZIP をダブルクリック
+4. `fabric-handson-lab-main` というフォルダーが作成されます。これを次の手順（0-3）で VS Code から開きます。
+
+> 💡 Git を使う場合は、ZIP の代わりに次のコマンドでも取得できます（任意）。
+>
+> ```bash
+> git clone https://github.com/TakumiN19/fabric-handson-lab.git
+> ```
+
+---
+
+## 0-3. VS Code を起動してターミナルを開く
 
 このハンズオンのコマンドは、すべて **VS Code の組み込みターミナル** で実行します。
 
 1. **VS Code を起動**します。
    - Windows: スタートメニューで「Visual Studio Code」を検索して起動
    - macOS: Launchpad またはアプリケーションフォルダーから「Visual Studio Code」を起動
-2. （任意）作業用のフォルダーを開きます: メニュー **ファイル > フォルダーを開く…**（File > Open Folder…）。
+2. **0-2 で展開したフォルダー**（`fabric-handson-lab-main`）を開きます: メニュー **ファイル > フォルダーを開く…**（File > Open Folder…）。
 3. **ターミナルを開きます**: メニュー **ターミナル > 新しいターミナル**（Terminal > New Terminal）を選択。
    - ショートカット: <kbd>Ctrl</kbd>+<kbd>`</kbd>（バッククォート）。日本語キーボードでは <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>@</kbd> の場合があります。
 4. ウィンドウ下部に **ターミナルパネル** が開きます。以降のコマンドは、このターミナルに入力します。
@@ -39,7 +59,7 @@
 
 ---
 
-## 0-3. ツールのバージョンを確認
+## 0-4. ツールのバージョンを確認
 
 VS Code のターミナルで以下を実行し、いずれもバージョンが表示されることを確認します。
 
@@ -62,9 +82,9 @@ python3 --version
 
 ---
 
-## 0-4. GitHub Copilot CLI を起動してサインインする
+## 0-5. GitHub Copilot CLI を起動してサインインする
 
-VS Code のターミナル（0-2）で GitHub Copilot CLI を起動し、GitHub アカウントでサインインします。
+VS Code のターミナル（0-3）で GitHub Copilot CLI を起動し、GitHub アカウントでサインインします。
 
 1. ターミナルで Copilot CLI を起動します。
 
@@ -96,9 +116,9 @@ VS Code のターミナル（0-2）で GitHub Copilot CLI を起動し、GitHub 
 
 ---
 
-## 0-5. skills-for-fabric プラグインの導入
+## 0-6. skills-for-fabric プラグインの導入
 
-0-4 で起動した Copilot CLI のプロンプトで実行します。
+0-5 で起動した Copilot CLI のプロンプトで実行します。
 
 GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加し、バンドルをインストールします。
 
@@ -128,6 +148,7 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 
 ## ✅ チェックポイント
 
+- [ ] 教材リポジトリを ZIP でダウンロードして展開した
 - [ ] `copilot --version` / `az version` / `python3 --version` がすべて表示される
 - [ ] `copilot` を起動し、`/login` で GitHub アカウントにサインインできた
 - [ ] `/model` でモデルを **Auto** に設定した
