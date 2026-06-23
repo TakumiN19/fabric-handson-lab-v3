@@ -197,9 +197,8 @@ Report published: 乗車分析レポート
 
 ---
 
-## 🎉 おつかれさまでした！
+## ➡️ 次は
 
-これで全ラボ（Lab 00〜06）が完了です。
-GitHub Copilot CLI と `skills-for-fabric` を使い、**自然言語プロンプトだけ**で
-Lakehouse へのデータロード → ショートカット → Warehouse → セマンティックモデル →
-Power BI レポートまでを一気通貫で構築しました 🚀
+データ基盤〜レポート（Lab 02〜06）が完成しました。
+最後に **[Lab 07 — Data Agent 作成](07-data-agent.md)** で、作ったセマンティックモデルに
+**自然言語で質問できる会話型 AI（Data Agent）** を構築します 🤖

@@ -68,6 +68,7 @@ GitHub Copilot CLI と **skills-for-fabric** スキルを使って、Microsoft F
 | 04 | [Warehouse ディメンション＆ファクトテーブル作成](labs/04-warehouse-dimensions.md) | Warehouse 作成 → ディメンション 5 本 → fact_greentrip_copilot (CTAS) | ✅ |
 | 05 | [セマンティックモデル作成](labs/05-semantic-model.md) | Warehouse テーブルからセマンティックモデル構築・リレーションシップ定義 | ✅ |
 | 06 | [Power BI レポート作成](labs/06-powerbi-report.md) | セマンティックモデルを使った多角分析レポート（5ビジュアル）を Fabric に公開 | ✅ |
+| 07 | [Data Agent 作成](labs/07-data-agent.md) | `sm_taxi_warehouse` に接続する会話型 AI（Data Agent）を作成・指示と代表質問5つを整備して公開 | ✅ |
 
 ---
 
