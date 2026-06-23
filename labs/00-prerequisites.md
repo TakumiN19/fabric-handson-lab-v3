@@ -62,7 +62,36 @@ python3 --version
 
 ---
 
-## 0-4. skills-for-fabric プラグインの導入
+## 0-4. GitHub Copilot CLI を起動してサインインする
+
+VS Code のターミナル（0-2）で GitHub Copilot CLI を起動し、GitHub アカウントでサインインします。
+
+1. ターミナルで Copilot CLI を起動します。
+
+   ```bash
+   copilot
+   ```
+
+2. 初回は、このフォルダーを信頼するか確認されます。**「1. Yes, proceed」**（このセッションのみ許可）を選びます。
+   毎回聞かれないようにするには「2. Yes, and remember this folder…」を選びます。
+3. サインインしていない場合は、`/login` を使うよう案内が表示されます。プロンプトに次を入力します。
+
+   ```text
+   /login
+   ```
+
+4. 画面の指示に従ってサインインします。ブラウザが開く（またはデバイスコードと URL `https://github.com/login/device` が表示される）ので、**ハンズオンで使う GitHub アカウント**で承認します。
+5. サインインが完了すると、プロンプトが使えるようになります。
+
+> 💡 GitHub Copilot CLI の利用には **有効な GitHub Copilot サブスクリプション** が必要です（0-1 参照）。
+> CLI を終了するには、プロンプトで `/exit` を実行するか <kbd>Ctrl</kbd>+<kbd>C</kbd> を2回押します。
+> これは **GitHub** へのサインインです（**Azure** へのサインインは [Lab 01](01-login-and-connect.md) で行います）。
+
+---
+
+## 0-5. skills-for-fabric プラグインの導入
+
+0-4 で起動した Copilot CLI のプロンプトで実行します。
 
 GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加し、バンドルをインストールします。
 
@@ -93,6 +122,7 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 ## ✅ チェックポイント
 
 - [ ] `copilot --version` / `az version` / `python3 --version` がすべて表示される
+- [ ] `copilot` を起動し、`/login` で GitHub アカウントにサインインできた
 - [ ] `/plugin list` に `fabric-skills`（または `fabric-consumption`）が表示される
 
 すべて確認できたら **[Lab 01 — サインインとワークスペース接続](01-login-and-connect.md)** に進みます。
