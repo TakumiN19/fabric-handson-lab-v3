@@ -11,8 +11,8 @@
 ADLS Gen2 + CSV + 共有接続  ──→   共有接続でショートカット作成  →  Lakehouse から参照・テーブル化
 ```
 
-> ✅ **このラボに Azure の権限（サブスクリプションの RBAC）は不要です。**
-> ADLS Gen2 ストレージ・Service Principal・Fabric 接続（Connection）は **講師が 1 か所にまとめて作成・共有済み**です。
+> ✅ **このラボに Azure の権限（サブスクリプションの RBAC〔ロールベースのアクセス権〕）は不要です。**
+> ADLS Gen2 ストレージ・Service Principal〔アプリ/サービス用の ID〕・Fabric 接続（Connection＝データ源への到達情報と資格情報をまとめた設定）は **講師が 1 か所にまとめて作成・共有済み**です。
 > 受講者は **Fabric 側でショートカットを作るだけ**。`az storage account create` などの Azure 操作は行いません。
 
 ---

@@ -246,6 +246,21 @@ Microsoft のクラウド**ID 管理サービス**。サインインや権限の
 - **本ハンズオン**: Lab 05・06（Power BI）はトライアル（PPU 相当）が必要です。Fabric (Free) では作成できません。
 - 📖 [Microsoft Learn（Fabric トライアル）](https://learn.microsoft.com/fabric/fundamentals/fabric-trial)
 
+### サービスプリンシパル（Service Principal）
+人ではなく**アプリやサービスが認証に使う ID**。バックグラウンド処理が、ユーザーの手を借りずにリソースへアクセスするために使います。
+- **本ハンズオン**: Lab 03 の共有 ADLS 接続に、SP の資格情報があらかじめ格納されています（受講者は資格情報不要）。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/entra/identity-platform/app-objects-and-service-principals)
+
+### RBAC（ロールベースアクセス制御）
+「**誰に・何の権限を**」を**ロール（役割）の割り当て**で管理する仕組み。
+- **本ハンズオン**: Lab 03 は受講者にサブスクリプションの RBAC は不要です（必要な権限は講師が SP に付与済み）。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/azure/role-based-access-control/overview)
+
+### 接続（Connection）
+外部データ源への**到達情報（URL など）と資格情報をひとまとめにした Fabric の設定**。共有でき、ショートカットやデータ取り込みで使い回せます。
+- **本ハンズオン**: Lab 03 で共有接続 `adls-handson-sp-v3` を指定してショートカットを作成します（Lab 08 でも使用）。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/fabric/data-factory/data-source-management)
+
 ---
 
 ## 7. ツール・フレームワーク
