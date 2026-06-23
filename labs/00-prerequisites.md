@@ -76,6 +76,5 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 
 - [ ] `copilot --version` / `az version` / `python3 --version` がすべて表示される
 - [ ] `/plugin list` に `fabric-skills`（または `fabric-consumption`）が表示される
-- [ ] 自分のサインインユーザー名と接続先ワークスペース名を把握している
 
 すべて確認できたら **[Lab 01 — サインインとワークスペース接続](01-login-and-connect.md)** に進みます。
