@@ -118,5 +118,8 @@ Orange / Red / SolidGray から選択可能）。
 
 ## 🎉 おつかれさまでした！
 
-本編（Lab 00〜07）に加えて、付録のデザイン作り直しまで完了です。
+本編（Lab 00〜08）に加えて、付録のデザイン作り直しまで完了です。
 公式テーマを差し替えれば、別パレット（Green / Orange など）にもワンプロンプトで切り替えられます 🎨
+
+> 🎨 **（任意）アプリ側のデザインも磨く**: [Lab 10 — 付録: Fabric App を UX デザインで作り直す](10-rayfin-fabric-app-ux.md) で、
+> Lab 08 の Fabric App を独自デザインシステム（Midnight Dispatch）でデモ映えさせられます（この付録の Fabric App 版）。

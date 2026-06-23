@@ -220,5 +220,5 @@ Lakehouse → ショートカット → Warehouse → セマンティックモ�
 入力データが **OneLake に自動ミラー**され、**Data Agent と会話できるアプリ**が自分のワークスペースで動いています。
 
 > 🎨 **（任意）さらにデザインを磨く**:
-> [Lab 09 — 付録: デジタル庁スタイルに作り直す](09-appendix-digicho-dashboard-design.md) で、
-> Lab 06 で作ったレポートを**デジタル庁 ダッシュボードデザインテンプレート（Blue）**風に仕上げられます。
+> - [Lab 09 — 付録: デジタル庁スタイルに作り直す](09-appendix-digicho-dashboard-design.md) … Lab 06 の **Power BI レポート**をデジタル庁テンプレート（Blue）風に。
+> - [Lab 10 — 付録: Fabric App を UX デザインで作り直す](10-rayfin-fabric-app-ux.md) … この **Fabric App** を独自デザインシステム（Midnight Dispatch）＋リッチな可視化＋ゾーン注釈でデモ映えさせる。
