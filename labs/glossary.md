@@ -171,6 +171,16 @@ Microsoft の SQL 方言（Transact-SQL）。標準 SQL に変数・制御構文
 - **本ハンズオン**: Warehouse / SQL Endpoint へ `sqlcmd` で接続する際のサーバー指定に使います（Lab 04〜06・10）。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/fabric/data-warehouse/connectivity)
 
+### LRO（Long-Running Operation／非同期処理）
+時間のかかる REST API 操作を**非同期**で行う仕組み。最初は「受付（202）」だけ返し、別 URL を**ポーリング**して完了（Succeeded）を確認します。
+- **本ハンズオン**: Warehouse やセマンティックモデルの作成（Lab 04・05）で、Copilot が LRO をポーリングして完了を待ちます。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/rest/api/fabric/articles/long-running-operation)
+
+### Power Query / M（M 式）
+データの**取得・整形**を記述する Power BI / Fabric の式言語。`let … in` と `Sql.Database(...)` のような関数で「どこから何を取るか」を表します。
+- **本ハンズオン**: Lab 05 のセマンティックモデルの `partition`（データ取得元）が Power Query (M) で書かれています。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/power-query/power-query-what-is-power-query)
+
 ---
 
 ## 4. データモデリングの概念
@@ -224,6 +234,36 @@ Microsoft の SQL 方言（Transact-SQL）。標準 SQL に変数・制御構文
 Power BI レポートを**フォルダー＋ JSON のテキスト**で表す保存形式。差分管理や自動生成に向きます。
 - **本ハンズオン**: Lab 06 でレポートを PBIR で組み立てて Fabric に公開します。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/power-bi/developer/projects/projects-report)
+
+### FK（外部キー / Foreign Key）
+あるテーブルの列が、別テーブルのキー列を参照する関係。ファクトの `VendorID` がディメンションの `VendorID` を指す、など。
+- **本ハンズオン**: Lab 05 でファクトの FK 列（VendorID 等）をディメンションのキーに結びつけてリレーションシップを作ります。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/sql/relational-databases/tables/primary-and-foreign-key-constraints)
+
+### カーディナリティ（多対一 / Cardinality）
+リレーションシップの**方向と多重度**。ファクト（多側）→ ディメンション（一側）の「多対一」が基本形です。
+- **本ハンズオン**: Lab 05 の4本のリレーションシップはすべて「多 → 一」（ファクト→ディメンション）です。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/power-bi/transform-model/desktop-relationships-understand)
+
+### partition（パーティション）
+セマンティックモデルのテーブルが**「どこから・どう」データを取得するか**を定義する単位（取得方法 `mode`＝import/directQuery ＋ ソース式）。
+- **本ハンズオン**: Lab 05 の TMDL でファクト/ディメンションの partition を定義します（mode と Power Query ソース）。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/analysis-services/tabular-models/partitions-ssas-tabular)
+
+### TMDL プロパティ（formatString / summarizeBy / isHidden）
+TMDL で列・メジャーの振る舞いを指定する主なプロパティ。**formatString**=表示書式、**summarizeBy**=既定の集計方法、**isHidden**=非表示。
+- **本ハンズオン**: Lab 05 でメジャーに `formatString`、FK 列に `isHidden`、キー列に `summarizeBy: none` を設定します。
+- 📖 [Microsoft Learn（TMDL）](https://learn.microsoft.com/analysis-services/tmdl/tmdl-overview)
+
+### データソース／資格情報（Data Source / Credentials）
+セマンティックモデルが参照する**データの取得元**と、接続に使う**認証情報**。import モードでは初回に資格情報の設定が必要です。
+- **本ハンズオン**: Lab 05・06 で import を使う場合、Portal でデータソースの資格情報（組織アカウント）を設定します（DirectQuery なら SSO で不要）。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/power-bi/connect-data/power-bi-data-sources)
+
+### .pbism（セマンティックモデル プロジェクト形式）
+Power BI セマンティックモデルを**フォルダー＋テキスト（TMDL）**で表すプロジェクト形式。差分管理や自動デプロイに向きます。
+- **本ハンズオン**: Lab 05 で Copilot が `.pbism` ＋ `definition/`（TMDL 一式）を生成して REST API でデプロイします。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/power-bi/developer/projects/projects-dataset)
 
 ---
 

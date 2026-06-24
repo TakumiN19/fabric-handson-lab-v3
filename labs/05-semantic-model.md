@@ -192,10 +192,12 @@ table fact_greentrip_copilot
 ```
 
 > 💡 **設計ポイント**
-> - `fromColumn` = 多側（ファクト）、`toColumn` = 一側（ディメンション）
-> - ファクトテーブルの FK 列（VendorID 等）は `isHidden` で非表示
+> - `fromColumn` = 多側（ファクト）、`toColumn` = 一側（ディメンション）（**カーディナリティ**＝多対一）
+> - ファクトテーブルの **FK〔外部キー〕**列（VendorID 等）は `isHidden` で非表示
 > - ディメンションのキー列は `summarizeBy: none`
 > - メジャーには `formatString` が必須
+> - `partition` = テーブルのデータ取得単位（取得方法 `mode`＝import/directQuery ＋ source）
+> - `partition` の `let … in`（`Sql.Database(...)`）は **Power Query（M 式）**＝データ取得の式言語
 
 > 🔌 **接続モード（import / DirectQuery）**: 上の例は `mode: import`（取り込み）です。
 > import は初回に Fabric Portal でデータソースの資格情報（組織アカウント）設定が必要です。
