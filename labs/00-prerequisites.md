@@ -72,6 +72,10 @@ az version
 
 # Python 3（REST API レスポンスの整形に使用）
 python3 --version
+
+# Node.js / npm（Copilot CLI を npm で入れる場合・一部スキルで使用、Node.js 22 以上）
+node --version
+npm --version
 ```
 
 | ツール | 未インストール時の対処 |
@@ -79,6 +83,31 @@ python3 --version
 | GitHub Copilot CLI | macOS/Linux: `brew install copilot-cli` / Windows: `winget install GitHub.Copilot`（PowerShell v6+）/ npm（全OS・Node.js 22+）: `npm install -g @github/copilot` / [公式手順](https://docs.github.com/ja/copilot/how-tos/set-up/install-copilot-cli) |
 | Azure CLI | macOS: `brew install azure-cli` / Windows: `winget install Microsoft.AzureCLI` / [公式手順](https://learn.microsoft.com/cli/azure/install-azure-cli) |
 | Python 3 | macOS には標準搭載。なければ `brew install python` / Windows: [python.org](https://www.python.org/downloads/) からインストーラーを実行 |
+| Node.js / npm | 下の「💡 **Node.js のインストール**」を参照（Windows / bash 別の手順・**Node.js 22 以上**） |
+
+> 💡 **Node.js のインストール** — `npm` で Copilot CLI を入れる場合や、Lab 06 のレポート作成スキル（`powerbi-report-authoring`）で使用します（**Node.js 22 以上**。`npm` は Node.js に同梱されます）。
+>
+> **Windows（PowerShell）**
+>
+> ```powershell
+> winget install OpenJS.NodeJS.LTS
+> ```
+>
+> インストール後、PowerShell を開き直してから `node --version` で確認します。
+>
+> **bash 環境（macOS / Linux / WSL）**
+>
+> ```bash
+> # macOS（Homebrew）
+> brew install node
+>
+> # Linux / WSL（nvm でユーザー権限のまま導入）
+> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
+> # 表示される案内に従い、ターミナルを開き直してから:
+> nvm install --lts
+> ```
+>
+> うまくいかない場合は [nodejs.org のダウンロード](https://nodejs.org/en/download) からインストーラーでも導入できます。
 
 ---
 
@@ -149,7 +178,7 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 ## ✅ チェックポイント
 
 - [ ] 教材リポジトリを ZIP でダウンロードして展開した
-- [ ] `copilot --version` / `az version` / `python3 --version` がすべて表示される
+- [ ] `copilot --version` / `az version` / `python3 --version` / `node --version` がすべて表示される
 - [ ] `copilot` を起動し、`/login` で GitHub アカウントにサインインできた
 - [ ] `/model` でモデルを **Auto** に設定した
 - [ ] `/plugin list` に `fabric-skills`（または `fabric-consumption`）が表示される
