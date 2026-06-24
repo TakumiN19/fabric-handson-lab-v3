@@ -238,7 +238,6 @@ table fact_greentrip_copilot
 | `202` だが `Failed` になる | エラー詳細を「LRO のエラー内容を表示して」で確認 |
 | TMDL バリデーションエラー | `InvalidLineType: Property!` → `database.tmdl` が `database` 宣言から始まっているか確認 |
 | テーブルが見つからない | Warehouse の接続文字列が正しいか `az rest` で再確認 |
-| データ更新で認証エラー | Portal でデータソース認証情報を「組織アカウント」で設定 |
 | セマンティックモデルが消えた | 再デプロイ：「sm_taxi_warehouse セマンティックモデルを再作成して」 |
 
 ---
