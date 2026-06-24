@@ -76,8 +76,9 @@ columns: pickup_date, pickup_hour, pickup_month, fare_amount, PULocationID
 > ```
 
 🤖 **Copilot の動き**
-- TMDL を更新してテーブル・メジャー・リレーションシップを追加し、
-  Fabric REST API で再デプロイします（非同期処理を完了まで待機）。
+- `fact_greentrip_dates` を **Lakehouse（`taxi_lakehouse`）由来の DirectQuery テーブル**として追加し、
+  メジャーとリレーションシップを定義した TMDL を Fabric REST API で再デプロイします
+  （非同期処理を完了まで待機）。
 
 ✅ **期待する結果**
 
@@ -85,6 +86,18 @@ columns: pickup_date, pickup_hour, pickup_month, fare_amount, PULocationID
 Status: Succeeded
 sm_taxi_warehouse に fact_greentrip_dates と 3 つのメジャーを追加
 ```
+
+> 💡 **設計ポイント（コンポジットモデル）**
+> この手順でモデルは **2 つのデータソースをまたぐ「コンポジットモデル」** になります。
+> - ディメンション各表と元のファクト `fact_greentrip_copilot` … **Warehouse（`taxi_warehouse`）** 由来
+> - 追加する `fact_greentrip_dates` … **Lakehouse（`taxi_lakehouse`）** 由来
+>
+> 両者は同じ Fabric SQL サーバ上の**別データベース**のため、
+> `fact_greentrip_dates.PULocationID → dimension_taxiZoneLookup.LocationID` のリレーションシップは
+> ソースをまたぐ**「限定リレーションシップ（limited relationship）」**になります。
+> 平均料金などの集計は正しく動作しますが、通常のリレーションシップと違い
+> **参照整合性を仮定しない**（テーブル境界で集計を分けて評価する）点が特徴です。
+> 📖 [コンポジットモデル（Microsoft Learn）](https://learn.microsoft.com/ja-jp/power-bi/transform-model/desktop-composite-models)
 
 ---
 
