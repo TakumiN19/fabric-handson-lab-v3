@@ -1,6 +1,6 @@
 # Lab 04 — Warehouse ディメンションテーブル＆ファクトテーブル作成（プロンプト駆動）
 
-所要時間: 約 25 分  
+所要時間: 約 20 分  
 前提: [Lab 03](03-adls-shortcut.md) 完了（`taxi_zone_lookup` テーブルが Lakehouse に存在すること）
 
 このラボでは Fabric Data Warehouse を作成し、ディメンションテーブルとファクトテーブルを構築します。
