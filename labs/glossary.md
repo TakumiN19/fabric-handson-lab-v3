@@ -265,6 +265,26 @@ Power BI セマンティックモデルを**フォルダー＋テキスト（TMD
 - **本ハンズオン**: Lab 05 で Copilot が `.pbism` ＋ `definition/`（TMDL 一式）を生成して REST API でデプロイします。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/power-bi/developer/projects/projects-dataset)
 
+### コンポジットモデル（Composite Model）
+1つのセマンティックモデルが**複数のデータソース**（例: Warehouse と Lakehouse、別データベース）のテーブルを束ねた構成。Import と DirectQuery の混在も含みます。
+- **本ハンズオン**: Lab 06 で Warehouse 由来のディメンションに Lakehouse 由来の `fact_greentrip_dates` を追加し、コンポジットモデルにします。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/ja-jp/power-bi/transform-model/desktop-composite-models)
+
+### 限定リレーションシップ（Limited Relationship）
+**異なるデータソース（ソースグループ）をまたぐ**リレーションシップ。集計は正しく動きますが、**参照整合性**（ファクトのキーが必ずディメンションに存在すること）を**仮定せず**、テーブルごとに評価する点が通常のリレーションシップと異なります。
+- **本ハンズオン**: Lab 06 のコンポジットモデルで、`fact_greentrip_dates`（Lakehouse）→ `dimension_taxiZoneLookup`（Warehouse）の関係が限定リレーションシップになります。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/ja-jp/power-bi/transform-model/desktop-relationships-understand)
+
+### KPI（主要指標）
+「平均運賃」「総乗車件数」などの**重要な数値を大きくまとめて見せる**表示。Power BI には専用の KPI ビジュアルもありますが、本ラボでは確実に描画されるテーブル/マトリックスで代用します。
+- **本ハンズオン**: Lab 06 のレポート上部に、平均料金・総乗車件数・最大料金の KPI を配置します。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/ja-jp/power-bi/visuals/power-bi-visualization-kpi)
+
+### カード／マトリックス（ビジュアルの種類）
+**カード**は単一の数値を大きく表示するビジュアル、**マトリックス**は行×列の集計表（Excel のピボットテーブルに近い）。
+- **本ハンズオン**: Lab 06 では KPI を**カードではなくマトリックス（テーブル）**で表示します（この環境でカードが空白になる事象の回避策）。
+- 📖 [Microsoft Learn（マトリックス）](https://learn.microsoft.com/ja-jp/power-bi/visuals/desktop-matrix-visual)
+
 ---
 
 ## 5. データ連携・移行
