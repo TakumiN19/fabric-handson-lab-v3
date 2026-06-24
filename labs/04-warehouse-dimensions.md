@@ -26,7 +26,7 @@ Warehouse 作成  →  ディメンションテーブル 5 本作成  →  フ�
 🤖 **Copilot の動き**
 - Fabric REST API `POST /v1/workspaces/{wsId}/warehouses` を実行
 - 作成完了まで待機（約15秒）
-- 接続文字列（FQDN）を取得
+- 接続文字列（FQDN〔サーバーの完全なアドレス〕）を取得
 
 ✅ **期待する結果**
 
@@ -61,7 +61,7 @@ Server:        xxxxxx.datawarehouse.fabric.microsoft.com
 > - dimension_taxiZoneLookup: Lakehouse の taxi_zone_lookup からロード
 > ```
 
-🤖 **Copilot の動き** — `sqlcmd` で T-SQL を実行
+🤖 **Copilot の動き** — `sqlcmd`〔SQL を実行する CLI〕で T-SQL〔Microsoft の SQL 方言〕を実行
 
 ```sql
 -- dimension_VendorID
@@ -128,7 +128,7 @@ dimension_PaymentType        6
 dimension_taxiZoneLookup   265
 ```
 
-> 💡 **ポイント**: `[taxi_lakehouse].[dbo].[taxi_zone_lookup]` のように
+> 💡 **ポイント（クロス DB クエリ）**: `[taxi_lakehouse].[dbo].[taxi_zone_lookup]` のように
 > **3パート名（アイテム名.dbo.テーブル名）** で同一ワークスペース内の Lakehouse を参照できます。
 
 > ⏳ **メモ（同期ラグ）**: `dimension_taxiZoneLookup` は Lakehouse の `taxi_zone_lookup` を参照します。
@@ -211,7 +211,7 @@ trip_type          int          ← null→0、bigint から変換
 cbd_congestion_fee float
 ```
 
-> ⚠️ **補足**: `lpep_pickup_datetime` / `lpep_dropoff_datetime` は Lakehouse の `timestamp_ntz` 型が
+> ⚠️ **補足**: `lpep_pickup_datetime` / `lpep_dropoff_datetime` は Lakehouse の `timestamp_ntz`〔タイムゾーンなしの日時型〕が
 > Lakehouse SQL Endpoint 経由では公開されないため、Warehouse テーブルには含まれません。
 > datetime 列が必要な場合は、Livy + PySpark で Parquet に変換してから COPY INTO するか、
 > Dataflow Gen2 を使用してください。

@@ -107,6 +107,11 @@ Azure の**大容量データ向けストレージ**。階層フォルダーと�
 - **本ハンズオン**: Lab 03 で CSV を置き、Fabric からショートカットで参照します。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/azure/storage/blobs/data-lake-storage-introduction)
 
+### timestamp_ntz（タイムゾーンなしの日時型）
+Spark / Delta の**タイムゾーン情報を持たない日時型**（timestamp without time zone）。
+- **本ハンズオン**: Lab 04 で、Lakehouse の `timestamp_ntz` 列は Warehouse の SQL Endpoint 経由では公開されないため、Warehouse のファクトには日時列を含めません（日時が必要な Lab 06 では Livy/PySpark で別途用意）。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/azure/databricks/sql/language-manual/data-types/timestamp-ntz-type)
+
 ---
 
 ## 3. 処理基盤と API
@@ -150,6 +155,21 @@ API を呼ぶときに本人確認として渡す**一時的な認証キー**。
 セマンティックモデルに対して **DAX クエリを実行して結果を取得する** Power BI REST API。
 - **本ハンズオン**: Lab 10 でセマンティックモデルから集計値を取り出し、アプリ DB にスナップショットするのに使います。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/rest/api/power-bi/datasets/execute-queries)
+
+### T-SQL（Transact-SQL）
+Microsoft の SQL 方言（Transact-SQL）。標準 SQL に変数・制御構文などの拡張を加えたもの。
+- **本ハンズオン**: Lab 04・05 で Warehouse のテーブル作成・データ投入・クエリに使います。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/sql/t-sql/language-reference)
+
+### クロス DB クエリ / 3 パート名
+`アイテム名.スキーマ.テーブル名`（例 `taxi_lakehouse.dbo.taxi_zone_lookup`）の **3 パート名**で、**同一ワークスペース内の別アイテム（Lakehouse など）を横断参照**する Fabric の機能。
+- **本ハンズオン**: Lab 04 で Warehouse から Lakehouse の `taxi_zone_lookup` を参照してディメンションをロードします。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/fabric/data-warehouse/query-warehouse)
+
+### FQDN / 接続文字列
+**FQDN**（Fully Qualified Domain Name）はサーバーの完全なアドレス（例 `xxx.datawarehouse.fabric.microsoft.com`）。**接続文字列**は接続先（サーバー・DB 等）をまとめた文字列。
+- **本ハンズオン**: Warehouse / SQL Endpoint へ `sqlcmd` で接続する際のサーバー指定に使います（Lab 04〜06・10）。
+- 📖 [Microsoft Learn](https://learn.microsoft.com/fabric/data-warehouse/connectivity)
 
 ---
 
@@ -284,6 +304,11 @@ Copilot CLI に Fabric 操作のスキルを追加する**プラグイン群**�
 Azure / Fabric を**コマンドで操作・認証**するツール。
 - **本ハンズオン**: `az login` でのサインインや、API 用トークンの取得に使います。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/cli/azure/install-azure-cli)
+
+### sqlcmd
+Warehouse・SQL Endpoint・SQL Database に**コマンドラインから SQL を実行**する CLI ツール（本ハンズオンは新しい go-sqlcmd を使用）。
+- **本ハンズオン**: Lab 04・05・06・10 で T-SQL の実行やデータ確認に使います（Entra ID 認証）。
+- 📖 [Microsoft Learn（go-sqlcmd）](https://learn.microsoft.com/sql/tools/sqlcmd/go-sqlcmd-utility)
 
 ---
 
