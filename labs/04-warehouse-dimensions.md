@@ -156,7 +156,7 @@ dimension_taxiZoneLookup   265
 > 以下の処理をしてから書き込んで：
 > - store_and_fwd_flag, extra, mta_tax, improvement_surcharge, congestion_surcharge を削除
 > - trip_type の null を 0 に置換
-> - VendorID, PULocationID, RatecodeID, payment_type, trip_type を整数型にキャスト
+> - VendorID, PULocationID, DOLocationID, RatecodeID, payment_type, trip_type を整数型にキャスト
 > ```
 
 🤖 **Copilot の動き** — CTAS（CREATE TABLE AS SELECT）で一括変換・書き込み
