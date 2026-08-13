@@ -164,6 +164,9 @@ URL を開いて **`student<番号>` でサインイン**すると、ダッシ�
 🎉 deployed: taxi-dashboard (AppBackend)
 🌐 https://<...>.webapp.fabricapps.net
 ```
+完成イメージ
+
+<img width="1672" height="1328" alt="image" src="https://github.com/user-attachments/assets/a81f9115-d1e2-448c-a8b8-e4dfd800279b" />
 
 ---
 
