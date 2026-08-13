@@ -14,6 +14,9 @@ Copilot CLI が自動で行うので、あなたがやるのは**プロンプト
 > 📦 取り込むサンプルデータは、Lab 00 で用意したこのハンズオンリポジトリの
 > `data/green_tripdata_2026-04.parquet`（NYC グリーンタクシー風のサンプル・約 1.3 MB）です。
 
+<img width="1156" height="643" alt="image" src="https://github.com/user-attachments/assets/055979f9-7909-4694-98b1-e03a4ebe8489" />
+
+
 ---
 
 > 📖 **分からない用語があれば** [用語集（Glossary）](glossary.md) で確認できます（Lakehouse・Delta・Livy・セマンティックモデル など）。
