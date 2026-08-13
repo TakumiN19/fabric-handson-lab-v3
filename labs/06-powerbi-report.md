@@ -175,6 +175,11 @@ Report published: 乗車分析レポート
 
 ここまで表示されれば、レポートの作成・公開は成功です 🎉
 
+完成イメージ
+
+<img width="1594" height="907" alt="image" src="https://github.com/user-attachments/assets/b4c7448c-1e23-4fdd-b9fe-3c65c988b777" />
+
+
 ---
 
 ## 🔍 （参考）裏側で実行される処理
