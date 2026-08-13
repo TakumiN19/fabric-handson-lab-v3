@@ -79,6 +79,9 @@ Status: Succeeded（レポート再公開）
    デジタル庁スタイル（角丸グレーカード・青系）で表示されることを確認
 4. スライサーで地区などを選び、全ビジュアルが連動して絞り込まれることを確認
 
+完成イメージ
+<img width="800" height="463" alt="image" src="https://github.com/user-attachments/assets/f965217b-da32-4312-ae09-59f27ef2e506" />
+
 ここまで表示されれば、デジタル庁スタイルへの作り直しは成功です 🎉
 
 ---
