@@ -3,7 +3,20 @@
 所要時間: 約 10 分
 
 このラボでは、ハンズオンに必要なツールが揃っているか確認し、
-`skills-for-fabric` プラグインを導入します。
+`skills-for-fabric` と `powerbi-authoring` プラグインを導入します。
+
+> [!TIP]
+> **GitHub Codespacesを使う場合**は、ルートREADMEの
+> [「GitHub Codespacesで開始」](../README.md)からCodespaceを作成してください。
+> 教材の取得と必要なCLI／プラグインの導入は自動で完了するため、0-2のZIPダウンロードと
+> 0-4の手動インストールを省略できます。ターミナルで次を実行してから0-5へ進みます。
+>
+> ```bash
+> bash .devcontainer/scripts/verify.sh
+> ```
+>
+> ブラウザ、GitHubアカウント、GitHub Copilotライセンス、配布されたFabricアカウントは
+> Codespaces利用時も必要です。
 
 ---
 
@@ -12,7 +25,7 @@
 ハンズオン当日までに、以下をご準備ください。
 
 - **PC**: Webに接続可能なPCをご持参ください。プロキシ経由での接続などPCの設定により弊社ゲストWiFiに接続できない可能性がある場合は、ご自身のモバイルルーター等をご持参ください。
-- **Visual Studio Code**: インストールしてください。  
+- **Visual Studio Code**: ローカルPCで進める場合はインストールしてください。Codespacesではブラウザ版またはデスクトップ版VS Codeから接続できます。
   [Visual Studio Code — ダウンロード](https://code.visualstudio.com/)
 - **Microsoft Authenticator**: スマートフォンにインストールしてください。  
   [Microsoft Authenticator のダウンロード | Microsoft Support](https://support.microsoft.com/ja-jp/account-billing/microsoft-authenticator-%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89-351498fc-850a-45da-b7b6-27e523b8702a)
@@ -155,17 +168,12 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 # Copilot CLI のプロンプト内で実行（スラッシュコマンド）
 /plugin marketplace add microsoft/skills-for-fabric
 /plugin install fabric-skills@fabric-collection
+/plugin install powerbi-authoring@fabric-collection
 ```
 
-用途を絞って入れる場合は、以下のいずれかでも構いません。
-
-```text
-# 読み取り中心（クエリ・探索）— 本ハンズオン推奨
-/plugin install fabric-consumption@fabric-collection
-
-# 作成・管理（REST API / 自動化 / ノートブック）
-/plugin install fabric-authoring@fabric-collection
-```
+> [!NOTE]
+> Codespacesでは上記2プラグインがv0.3.14で自動導入されています。
+> marketplace追加やinstallを再実行せず、次の`/plugin list`で確認できます。
 
 導入済みプラグインの確認:
 
@@ -177,10 +185,10 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 
 ## ✅ チェックポイント
 
-- [ ] 教材リポジトリを ZIP でダウンロードして展開した
+- [ ] 教材リポジトリをZIPで展開した、またはCodespaceで開いた
 - [ ] `copilot --version` / `az version` / `python3 --version` / `node --version` がすべて表示される
 - [ ] `copilot` を起動し、`/login` で GitHub アカウントにサインインできた
 - [ ] `/model` でモデルを **Auto** に設定した
-- [ ] `/plugin list` に `fabric-skills`（または `fabric-consumption`）が表示される
+- [ ] `/plugin list` に `fabric-skills` と `powerbi-authoring` が表示される
 
 すべて確認できたら **[Lab 01 — サインインとワークスペース接続](01-login-and-connect.md)** に進みます。

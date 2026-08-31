@@ -19,7 +19,50 @@ Microsoft Fabricを**自然言語のプロンプトだけで操作する**ハン
 - Fabric REST API・SQL Endpoint を使ったデータ探索と分析
 - 自然言語プロンプトで Fabric ワークロードを動かす流れ
 
+## 🚀 GitHub Codespacesで開始（推奨）
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/TakumiN19/fabric-handson-lab?quickstart=1)
+
+上のボタンからCodespaceを作成すると、Dev Containerのセットアップ完了まで待機した後、
+次のローカルツールを検証済みバージョンで利用できます。
+
+| 自動導入されるもの | 固定バージョン |
+|--------------------|----------------|
+| Python | 3.12.11 |
+| Node.js／npm／npx | 22.22.0／10.9.4 |
+| Azure CLI | 2.89.1 |
+| GitHub Copilot CLI | 1.0.82 |
+| Rayfin CLI | 1.34.0 |
+| Power BIレポート作成CLI | 0.1.4 |
+| go-sqlcmd | 1.10.0 |
+| `fabric-skills`／`powerbi-authoring` | 0.3.14 |
+
+Codespaceのターミナルが開いたら、GitHub CopilotとAzureへdevice-code flowでサインインします。
+Azureへのサインインは[Lab 01](labs/01-login-and-connect.md)で実施しても構いません。
+
+```bash
+copilot login --device-code
+az login --tenant e6c1292e-65b7-4e2d-9e1b-13f24e7753fd --allow-no-subscriptions --use-device-code
+
+# 自動セットアップ結果を再確認
+bash .devcontainer/scripts/verify.sh
+```
+
+> [!IMPORTANT]
+> Dev Containerが自動化するのは**受講環境内のローカルツール**です。
+> Fabric容量、テナント設定、Workspace権限、共有ADLS、Lab 08の中継プロキシなどは
+> 自動作成されないため、「講師・テナント管理者向け事前確認」も完了してください。
+
+> [!NOTE]
+> Docker daemonとhost Docker socketは含めていません。Lab 08／10の主経路である
+> Fabricへの直接デプロイには不要です。Fabric AppのローカルViteプレビュー用ポート
+> `5173`は自動forwardされます。
+
 ## 🧰 受講者PCの必須環境
+
+Codespacesを使う場合、下表のCLI／runtimeはDev Containerが自動導入します。
+対応ブラウザ、GitHubアカウント、GitHub Copilotライセンス、配布されたFabricアカウントは
+Codespaces利用時も必要です。ローカルPCで進める場合は下表に従って手動導入してください。
 
 > [!IMPORTANT]
 > GitHub Copilot CLIの利用には、**有効なGitHub Copilotサブスクリプション**と、
@@ -34,7 +77,7 @@ Microsoft Fabricを**自然言語のプロンプトだけで操作する**ハン
 | GitHub Copilot CLI | 全Lab | 最新安定版（監査時: 1.0.82） | `copilot --version` |
 | Azure CLI (`az`) | Lab 01以降 | 最新安定版 | `az version` |
 | Node.js／npm／npx | Lab 06・08・10 | **22.xまたは24.x LTS** | `node --version` / `npm --version` / `npx --version` |
-| Rayfin CLI | Lab 08・10 | npm／npxで取得（監査時: 1.34.0） | プロジェクト作成後に`npx rayfin --version` |
+| Rayfin CLI | Lab 08・10 | npm／npxで取得（監査時: 1.34.0） | `rayfin --version`または`npx rayfin --version` |
 | Python | Lab 01〜04のREST補助、Lab 07・10 | **3.10以上3.14未満**（3.12／3.13推奨） | Windows: `python --version` または `py --version`、macOS・Linux: `python3 --version` |
 | `curl` | REST APIの参考手順 | OS付属版または最新安定版 | `curl --version`（Windowsは必要に応じて`curl.exe --version`） |
 | `sqlcmd`（Go版） | Lab 04・10 | go-sqlcmd（監査時検証: 1.10.0） | `sqlcmd --version` |
@@ -149,7 +192,7 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 
 | 対象 | 現状 | 実施時の扱い |
 |------|------|--------------|
-| Lab 00 | READMEで追加したgo-sqlcmd／Power BI authoring要件が未同期 | 当面はこのREADMEの必須環境を優先 |
+| Lab 00 | ローカルPC向けのgo-sqlcmd／Power BI CLI手動導入手順はREADMEと未同期。Codespacesでは自動導入済み | Codespacesを使用するか、このREADMEの必須環境を優先 |
 | Lab 07 | SDKの旧管理メソッドは現行0.1.30a0にも残るがdeprecated〔非推奨〕。問い合わせ経路は`FabricOpenAI`／Assistants API前提 | 現行公式の[Data Agent MCP接続先](https://learn.microsoft.com/fabric/data-science/data-agent-mcp-server)へ更新後に実施 |
 | Lab 07・10 | `fact_greentrip_dates`はLab 06で作成される一方、前提がLab 05になっている。Lab 07の`[Avg Fare]`／`[# Trips (Dates)]`とLab 10の`[Avg Fare]`も現行モデルに存在しない | 前提Labとメジャー名を統一してから実施 |
 | Lab 08 | `server/agent-proxy/README.md`を参照するが、プロキシ実装はリポジトリに未同梱。説明も旧Assistants APIフロー | 講師提供のMCP対応プロキシを使用 |
@@ -164,7 +207,9 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 
 | 通信 | 主な接続先 | 用途 |
 |------|------------|------|
-| HTTPS 443 | `github.com`、`api.github.com`、`raw.githubusercontent.com` | Copilot認証、教材・プラグイン取得 |
+| HTTPS 443 | `github.com`、`api.github.com`、`raw.githubusercontent.com`、`codeload.github.com`、`release-assets.githubusercontent.com` | Copilot認証、教材・プラグイン・go-sqlcmd取得 |
+| HTTPS 443 | `mcr.microsoft.com`、`ghcr.io`、`pkg-containers.githubusercontent.com` | Dev ContainerのベースイメージとFeature取得 |
+| HTTPS 443 | `nodejs.org`、`packages.microsoft.com`、`deb.debian.org` | Dev Container内のNode.js、Azure CLI、OS依存パッケージ取得 |
 | HTTPS 443 | `registry.npmjs.org`、`pypi.org`、`files.pythonhosted.org` | Node.js／Pythonパッケージ取得 |
 | HTTPS 443 | `login.microsoftonline.com`、`microsoft.com/devicelogin` | Microsoft Entra ID認証 |
 | HTTPS 443 | `app.fabric.microsoft.com`、`api.fabric.microsoft.com`、`api.powerbi.com` | Fabricポータル／REST API／Execute Queries |
@@ -238,7 +283,7 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 ## ▶️ 進め方
 
 1. 講師は上記の事前確認を完了し、容量・テナント設定・ADLS・中継プロキシ・ネットワークを確認する
-2. 受講者はこのREADMEの必須環境を確認してから、[Lab 00](labs/00-prerequisites.md)でツールとプラグインを準備する
+2. 受講者はCodespacesを起動するか、このREADMEの必須環境を確認してから、[Lab 00](labs/00-prerequisites.md)でツールとプラグインを準備する
 3. [Fabric へのサインイン](labs/fabric-portal-login.md)で、配布された`studentX`アカウントでFabricにサインインする
 4. [Lab 01](labs/01-login-and-connect.md)で**プロンプトから**サインインし、自分のワークスペースへ接続する
 5. Lab 02以降も、各ステップの自然言語プロンプトをCopilot CLIへ入力して進める
