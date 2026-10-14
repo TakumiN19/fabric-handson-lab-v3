@@ -3,8 +3,12 @@
 所要時間: 約 35 分
 前提:
 - [Lab 08](08-fabric-app.md) 完了（**Rayfin CLI で Fabric App を作る基本**に習熟していること）
-- [Lab 05](05-semantic-model.md) 完了（`sm_taxi_warehouse` が自分の `student<番号>` ワークスペースに存在）
-- **Node.js**（v20 以上）/ **`sqlcmd`**（go-sqlcmd）/ `az login`（`student<番号>`）
+- [Lab 05](05-semantic-model.md) 完了（`sm_taxi_warehouse` が登録済みのワークスペースに存在）
+- **Node.js**（v20 以上）/ **`sqlcmd`**（go-sqlcmd）/ Azure CLI に登録済みのアカウントでサインイン済み
+
+> 💡 **作業指示だけで実行できます。** アカウント・ワークスペース・接続先 ID は Copilot が自動で補います。
+> 各プロンプトはそのまま貼り付けてください。設定が見つからない場合は [Lab 00 の 0-7](00-prerequisites.md#0-7-自分の-student-番号を一度だけ登録する)を確認します。
+> ブラウザ認証は本人が行います。SQL サーバー名・DB 名・公開 URL は Copilot が対象アプリから取得します。
 
 > 🎫 **機能注意**: **Fabric Apps（preview）** を使います（Lab 08 と同じ）。Fabric 容量（**トライアル可**）が必要です。
 
@@ -85,13 +89,13 @@ Rayfin はバックエンドのパターンしか与えません。**画面の�
 > 🗣️ **プロンプト**
 > ```text
 > Rayfin で taxi-insights という Fabric App プロジェクトを作って、
-> student<番号> ワークスペース向けに初期化して。Fabric 認証（SSO のみ）にして。
-> そのあと Rayfin にブラウザでサインインして（student<番号> アカウントで）。
+> Fabric 認証（SSO のみ）で初期化して。
+> そのあと Rayfin にブラウザ認証でサインインして。
 > ```
 
 🤖 **Copilot の動き**
 - `npx rayfin init`（または `npm create @microsoft/rayfin@latest`）で React + Vite + Tailwind のプロジェクトを生成。
-- `npx rayfin login` → ブラウザで `student<番号>` アカウントでサインイン。
+- `npx rayfin login` → ブラウザで登録済みのアカウントでサインイン。
 - 可視化用に **Recharts** を追加（`npm i recharts`）。
 
 ✅ **期待する結果**
@@ -205,23 +209,25 @@ export class ZoneFareStat {
 
 > 🗣️ **プロンプト**
 > ```text
-> この taxi-insights アプリを student<番号> ワークスペースにデプロイして、
+> この taxi-insights アプリを Fabric にデプロイして、
 > 公開 URL とポータルリンクを教えて。
 > ```
 
-🤖 **Copilot の動き** — `npx rayfin up --workspace student<番号>` を実行（ヘッドレスは環境変数で渡す）。
+🤖 **Copilot の動き** — 登録済みの名前を `$WORKSPACE_NAME` に設定し、`npx rayfin up --workspace "$WORKSPACE_NAME"` を実行（ヘッドレスは環境変数で渡す）。
+
+以下は仕組みを示す参考です。ワークスペース名・ID は登録済み設定から Copilot が補い、
+サインイン中のユーザーとテナントを照合します。不一致ならデプロイを止めます。手入力は不要です。
 
 ```bash
-az account set --subscription e6c1292e-65b7-4e2d-9e1b-13f24e7753fd   # 有効アカウントを student<番号> に
-export RAYFIN_TOKEN=$(az account get-access-token --resource https://api.fabric.microsoft.com -o tsv)
-export RAYFIN_WORKSPACE_ID=<あなたの workspace id>
+export RAYFIN_TOKEN=$(az account get-access-token --resource https://api.fabric.microsoft.com --query accessToken -o tsv)
+export RAYFIN_WORKSPACE_ID="$WS_ID"
 export RAYFIN_TENANT_ID=e6c1292e-65b7-4e2d-9e1b-13f24e7753fd
 export RAYFIN_ENCRYPTION_FALLBACK_ENABLED=true
 npx rayfin up -y
 ```
 
 ✅ **期待する結果**
-`student<番号>` ワークスペースに `taxi-insights`（AppBackend）が作成され、`*.webapp.fabricapps.net` の公開 URL が返る（HTTP 200）。
+登録済みのワークスペースに `taxi-insights`（AppBackend）が作成され、`*.webapp.fabricapps.net` の公開 URL が返る（HTTP 200）。
 アプリ専用 SQL DB にエンティティどおりのテーブル（複数形）が作成される。
 
 ---
@@ -251,10 +257,11 @@ EVALUATE SUMMARIZECOLUMNS(
   "avg_fare",[Avg Fare], "trips",COUNTROWS(fact_greentrip_dates))
 ```
 
-取得した行は `sqlcmd`（Entra ID 認証）で投入します:
+取得した行は `sqlcmd`（Entra ID 認証）で投入します。
+以下の `$APP_SQL_SERVER` / `$APP_DB` は、デプロイ済み `taxi-insights` の接続情報から Copilot が取得して設定します。手入力は不要です。
 
 ```bash
-sqlcmd -S <app-sql-server> -d <app-db> \
+sqlcmd -S "$APP_SQL_SERVER" -d "$APP_DB" \
   --authentication-method=ActiveDirectoryDefault -C -i refresh.sql
 ```
 
@@ -275,7 +282,7 @@ AggTripTypes    2
 - 乗車種別: Street-hail 34,254 ＋ Dispatch 3,694 = **37,948** ✓
 - ボロー: Queens 9,957 / Manhattan 9,937 / Brooklyn 8,702 / Bronx 6,151 / Staten Island 2,800 / Unknown 266 / EWR 135 = **37,948** ✓
 
-公開 URL を開いて `student<番号>` でサインインすると、**ライブ数値のダッシュボード**が表示され、
+公開 URL を開いて登録済みのアカウントでサインインすると、**ライブ数値のダッシュボード**が表示され、
 ボロー別バーのクリックでゾーン一覧が絞り込まれ、ゾーンを選ぶと**注釈（メモ／タグ）を追加・削除**できます。
 
 > 🔁 **再実行可能**: スクリプトは DELETE+INSERT のため、セマンティックモデルが更新されたら**再実行するだけ**で
@@ -289,7 +296,7 @@ AggTripTypes    2
 ## ✅ チェックポイント
 
 - [ ] **10-1**: UX 要件と設計システム "Midnight Dispatch" を定義できた
-- [ ] **10-2**: Rayfin で `taxi-insights` を作り、`student<番号>` でサインインできた
+- [ ] **10-2**: Rayfin で `taxi-insights` を作り、登録済みのアカウントでサインインできた
 - [ ] **10-3**: 業務（`ZoneNote`）＋分析スナップショット 6 種を定義し `schema.ts` に登録した
 - [ ] **10-4**: 設計システムを適用した Recharts ダッシュボード（クロスフィルタ・注釈 CRUD）を実装した
 - [ ] **10-5**: `rayfin up` で Fabric にデプロイ（公開 URL が HTTP 200）
@@ -305,15 +312,15 @@ AggTripTypes    2
 | import 解決エラー | ESM のため import を **`.js` 拡張子付き**にする（`./ZoneNote.js`） |
 | デプロイは成功するがダッシュボードが空 | **10-6 未実行**。`refresh-analytics.py` を実行してスナップショットを投入 |
 | `Execute Queries` が 400/失敗 | DAX のメジャー名を **ASCII** にする（日本語メジャー名を使わない） |
-| `rayfin up` が認証で失敗 | `az` の有効アカウントが `student<番号>` か確認 → `RAYFIN_TOKEN` を取り直す |
-| ブラウザで開くと認証ループ | `student<番号>` の Fabric SSO で開く（InPrivate 推奨） |
+| `rayfin up` が認証で失敗 | 「登録済みのアカウントと接続先を照合して、トークンを取り直して再デプロイして」 |
+| ブラウザで開くと認証ループ | 登録済みのアカウントの Fabric SSO で開く（InPrivate 推奨） |
 
 ---
 
 ## 🎉 おつかれさまでした！
 
 Lab 08 の Fabric App に **設計システム（Midnight Dispatch）＋リッチなインタラクティブ可視化＋ゾーン注釈** を上乗せし、
-**デモ映えするデータアプリ**を `student<番号>` ワークスペースにデプロイしました 🚀
+**デモ映えするデータアプリ**を登録済みのワークスペースにデプロイしました 🚀
 Lab 09（Power BI のデザイン版）と合わせて、**BI レポートとデータアプリ、両方の「デザイン版」**が完成です。
 
 > 📌 **参考実装**: [`shinyay/taxi-zone-notes-app`](https://github.com/shinyay/taxi-zone-notes-app)

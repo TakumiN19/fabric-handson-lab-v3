@@ -3,6 +3,9 @@
 所要時間: 約 20 分  
 前提: [Lab 03](03-adls-shortcut.md) 完了（`taxi_zone_lookup` テーブルが Lakehouse に存在すること）
 
+> 💡 **作業指示だけで実行できます。** アカウント・ワークスペース・接続先 ID は Copilot が自動で補います。
+> 各プロンプトはそのまま貼り付けてください。設定が見つからない場合は [Lab 00 の 0-7](00-prerequisites.md#0-7-自分の-student-番号を一度だけ登録する)を確認します。
+
 このラボでは Fabric Data Warehouse を作成し、ディメンションテーブルとファクトテーブルを構築します。
 
 ```
@@ -19,7 +22,7 @@ Warehouse 作成  →  ディメンションテーブル 5 本作成  →  フ�
 
 > 🗣️ **プロンプト**
 > ```text
-> student<番号> ワークスペースに taxi_warehouse という名前の
+> taxi_warehouse という名前の
 > Fabric Warehouse を作って。
 > ```
 
@@ -253,8 +256,10 @@ fact_greentrip_copilot     37948
 
 ## 🔍 （参考）裏側で実行されるコマンド
 
+以下は仕組みを示す参考です。ワークスペース・Warehouse の ID と SQL 接続先は Copilot が API で特定して補うため、手入力は不要です。
+
 ```bash
-WS_ID="<自分のワークスペース ID>"
+# WS_ID / DW_ID は Copilot が登録済み設定と API の確認結果から設定済み
 TOKEN=$(az account get-access-token --resource https://api.fabric.microsoft.com --query accessToken -o tsv)
 
 # Warehouse 作成
@@ -265,7 +270,7 @@ curl -s -X POST -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/
 # 接続文字列取得
 DW_SERVER=$(az rest --method get \
   --resource "https://api.fabric.microsoft.com" \
-  --url "https://api.fabric.microsoft.com/v1/workspaces/$WS_ID/warehouses/<DW_ID>" \
+  --url "https://api.fabric.microsoft.com/v1/workspaces/$WS_ID/warehouses/$DW_ID" \
   --query "properties.connectionString" -o tsv)
 
 # SQL 実行
@@ -293,11 +298,11 @@ sqlcmd -S "$DW_SERVER" -d "taxi_warehouse" -G -i create_dimensions.sql -W
 
 | 症状 | 対処 |
 |------|------|
-| Warehouse 作成で `EntityNotFound` | `az account set` で正しいサブスクリプションに切り替え後、再度ログイン |
+| Warehouse 作成で `EntityNotFound` | 「サインイン状態と登録済みの接続先を照合して、必要ならサインインし直して」 |
 | `sqlcmd: command not found` | `brew install sqlcmd`（Mac）または `winget install sqlcmd`（Windows） |
 | `Invalid column name 'lpep_pickup_datetime'` | `timestamp_ntz` 型は SQL Endpoint 非対応。その列を除外するか Livy 経由で変換する |
 | Lakehouse クロス DB クエリが失敗 | Lakehouse 名が正確か確認。同一ワークスペース内のみ参照可 |
-| `Login failed` | `az login --tenant <tenantId>` で再認証後、`sqlcmd -G` で試す |
+| `Login failed` | 「ブラウザ認証でサインインし直して、taxi_warehouse の SQL 接続を再試行して」 |
 | CTAS が遅い | Warehouse は初回実行時に分散実行環境を起動するため、2〜3分かかることがある |
 
 ---

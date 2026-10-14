@@ -1,7 +1,10 @@
 # Lab 03 — ADLS Gen2 + OneLake ショートカット（プロンプト駆動）
 
 所要時間: 約 15 分
-前提: [Lab 02](02-lakehouse-load-and-transform.md) 完了（自分の `studentX` ワークスペース／Lakehouse に接続済み）
+前提: [Lab 02](02-lakehouse-load-and-transform.md) 完了（登録済みのワークスペース／Lakehouse に接続済み）
+
+> 💡 **作業指示だけで実行できます。** アカウント・ワークスペース・接続先 ID は Copilot が自動で補います。
+> 各プロンプトはそのまま貼り付けてください。設定が見つからない場合は [Lab 00 の 0-7](00-prerequisites.md#0-7-自分の-student-番号を一度だけ登録する)を確認します。
 
 このラボでは、**講師が用意した共有の ADLS Gen2**〔Azure Data Lake Storage Gen2＝大容量データ向けストレージ〕 に対して、各受講者が **OneLake ショートカット**を
 張り、Fabric から直接データを参照します。
@@ -133,26 +136,33 @@ Lakehouse
 > 🗣️ **プロンプト**
 > ```text
 > Livy セッションを使って、自分の Lakehouse の
-> Files/taxi_zone/Taxi_zone_lookup.csv を読み込んで、先頭 5 行を表示して。
+> Files/taxi_zone/Taxi_zone_lookup.csv を読み込んで、
+> LocationID が1・2・3・4・5のレコードを条件指定で表示して。
+> 各IDが1件ずつあることを確認し、LocationID の昇順で並べて。
 > ```
 
 🤖 **Copilot の動き** — PySpark で CSV を読み込み、DataFrame を表示
 
 ```python
+from pyspark.sql import functions as F
+
 df = spark.read.option("header", "true").csv("Files/taxi_zone/Taxi_zone_lookup.csv")
-df.show(5)
+df.filter(F.col("LocationID").cast("int").isin(1, 2, 3, 4, 5)).orderBy(
+    F.col("LocationID").cast("int")
+).show(truncate=False)
 ```
 
 ✅ **期待する結果**
 
-```
-+----------+-------+--------------------+------------+
-|LocationID|Borough|                Zone|service_zone|
-+----------+-------+--------------------+------------+
-|         1|    EWR|Newark Airport  ...|         EWR|
-|         2| Queens|Jamaica Bay         |  Boro Zone |
-...
-```
+| LocationID | Borough | Zone | service_zone |
+|------------|---------|------|--------------|
+| 1 | EWR | Newark Airport | EWR |
+| 2 | Queens | Jamaica Bay | Boro Zone |
+| 3 | Bronx | Allerton/Pelham Gardens | Boro Zone |
+| 4 | Manhattan | Alphabet City | Yellow Zone |
+| 5 | Staten Island | Arden Heights | Boro Zone |
+
+取得順ではなく **LocationID で 5 件を固定**するため、何度確認しても同じレコードになります。
 
 ---
 
@@ -195,13 +205,19 @@ root
 
 > 🗣️ **プロンプト**
 > ```text
-> taxi_zone_lookup テーブルを10行クエリして。
+> taxi_zone_lookup の LocationID が1・2・3・4・5のレコードを WHERE 条件でクエリして。
+> 各IDが1件ずつあること、CSVで確認した値と一致することを確認して。
+> LocationID の昇順で並べて。全体の行数と LocationID の重複・null 件数も確認して。
 > ```
 
 🤖 **Copilot の動き**
 
 ```python
-spark.sql("SELECT * FROM taxi_zone_lookup LIMIT 10").show(truncate=False)
+spark.sql("""
+SELECT * FROM taxi_zone_lookup
+WHERE LocationID IN (1, 2, 3, 4, 5)
+ORDER BY LocationID
+""").show(truncate=False)
 ```
 
 ✅ **期待する結果**
@@ -215,8 +231,10 @@ spark.sql("SELECT * FROM taxi_zone_lookup LIMIT 10").show(truncate=False)
 |3         |Bronx        |Allerton/Pelham Gardens|Boro Zone   |
 |4         |Manhattan    |Alphabet City          |Yellow Zone |
 |5         |Staten Island|Arden Heights          |Boro Zone   |
-...
++----------+-------------+-----------------------+------------+
 ```
+
+各 ID が 1 件ずつで、3-3 と同じ値になります。全体は **265 行**、LocationID の重複・null は **0 件**です。
 
 ---
 
@@ -234,7 +252,12 @@ green_tripdata_2026.DOLocationID ─┘
 > 🗣️ **プロンプト**
 > ```text
 > green_tripdata_2026 と taxi_zone_lookup を JOIN して、
-> 乗車・降車のゾーン名と区名を含めた結果を10行表示して。
+> Lab 02と同じ固定レコードに、乗車・降車のゾーン名と区名を付けて表示して。
+> pickup_date=2026-04-01・pickup_hour=0かつ、
+> VendorID=1・PULocationID=206・DOLocationID=89と、
+> VendorID=2・PULocationID=243・DOLocationID=108を WHERE 条件で選んで。
+> JOIN前後とも各条件が1件ずつであることを確認し、VendorID の昇順で並べて。
+> 全件をJOINした件数も37,948から増減しないことを確認して。
 > ```
 
 🤖 **Copilot の動き**
@@ -242,6 +265,7 @@ green_tripdata_2026.DOLocationID ─┘
 ```python
 spark.sql("""
 SELECT
+  t.VendorID,
   t.lpep_pickup_datetime,
   t.trip_distance,
   t.total_amount,
@@ -252,20 +276,26 @@ SELECT
 FROM green_tripdata_2026 t
 JOIN taxi_zone_lookup pu  ON t.PULocationID = pu.LocationID
 JOIN taxi_zone_lookup do_ ON t.DOLocationID = do_.LocationID
-LIMIT 10
+WHERE t.pickup_date = '2026-04-01'
+  AND t.pickup_hour = 0
+  AND (
+    (t.VendorID = 1 AND t.PULocationID = 206 AND t.DOLocationID = 89)
+    OR (t.VendorID = 2 AND t.PULocationID = 243 AND t.DOLocationID = 108)
+  )
+ORDER BY t.VendorID, t.PULocationID, t.DOLocationID
 """).show(truncate=False)
 ```
 
 ✅ **期待する結果**
 
-```
-+--------------------+-------------+------------+------------------------+--------------+---------------------------------+---------------+
-|lpep_pickup_datetime|trip_distance|total_amount|pickup_zone             |pickup_borough|dropoff_zone                     |dropoff_borough|
-+--------------------+-------------+------------+------------------------+--------------+---------------------------------+---------------+
-|2026-04-01 00:29:09 |6.56         |48.1        |DUMBO/Vinegar Hill      |Brooklyn      |Clinton East                     |Manhattan      |
-|2026-04-01 00:19:13 |0.0          |27.0        |Jackson Heights         |Queens        |Jackson Heights                  |Queens         |
-...
-```
+| VendorID | 乗車日時 | 距離 | 合計料金 | 乗車ゾーン | 乗車区 | 降車ゾーン | 降車区 |
+|----------|----------|------|----------|------------|--------|------------|--------|
+| 1 | 2026-04-01 00:01:51 | 5.94 | 19.38 | Saint George/New Brighton | Staten Island | Flatbush/Ditmas Park | Brooklyn |
+| 2 | 2026-04-01 00:00:02 | 6.64 | 35.41 | Washington Heights North | Manhattan | Gravesend | Brooklyn |
+
+地区名は [NYC TLC の地区マスター](https://d37ci6vzurychx.cloudfront.net/misc/taxi_zone_lookup.csv)に基づきます。
+共有 CSV の内容が異なる場合は、不一致として報告して講師に確認します。
+固定レコードだけでなく全件の JOIN 前後も確認し、未一致による行の欠落やキー重複による行の増加を検出します。
 
 > 💡 **同じテーブルを2回 JOIN するポイント**
 > `taxi_zone_lookup` を別名（`pu` / `do_`）で2回 JOIN することで、
@@ -275,10 +305,11 @@ LIMIT 10
 
 ## 🔍 （参考）裏側で実行されるコマンド
 
+以下は仕組みを示す参考です。ワークスペース・Lakehouse の ID は Copilot が API で特定して補うため、手入力は不要です。
+
 ```bash
 # ショートカット作成（共有接続IDを使用）
-WS_ID="<自分のワークスペースID>"
-LH_ID="<自分のLakehouseID>"
+# WS_ID / LH_ID は Copilot が登録済み設定と API の確認結果から設定済み
 CONN_ID="e580afe8-376d-43b2-8e03-192d031e782e"   # 共有接続 adls-handson-sp-v3
 TOKEN=$(az account get-access-token --resource https://api.fabric.microsoft.com --query accessToken -o tsv)
 
@@ -323,7 +354,7 @@ az rest --method get \
 | ショートカット作成で `connectionId not found` / 接続が使えない | 共有接続 ID が正しいか確認。表示されない場合は**接続が自分に共有されているか講師に確認**（接続 → 共有 → User 権限） |
 | CSV が読めない / ファイルが見えない | ショートカットの `subpath` がコンテナ名から始まっているか確認（`/taxi-data`） |
 | `green_tripdata_2026` が無い | Lab 02 を先に完了しているか確認 |
-| 自分の Lakehouse / ワークスペース ID が分からない | 「自分の studentX ワークスペースのアイテムと ID を一覧して」 |
+| 自分の Lakehouse / ワークスペース ID が分からない | 「自分のワークスペースのアイテムと ID を一覧して」 |
 
 > ℹ️ ストレージ作成・SP 作成・接続作成は**講師が実施済み**のため、受講者がそれらでエラーになることはありません。
 > もし「ストレージを作って」等の Azure 操作を促された場合は、このラボでは不要です（共有接続を使ってください）。

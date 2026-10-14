@@ -2,13 +2,17 @@
 
 所要時間: 約 30 分
 前提:
-- [Lab 05](05-semantic-model.md) 完了（`sm_taxi_warehouse` が自分の `student<番号>` ワークスペースに存在）
+- [Lab 05](05-semantic-model.md) 完了（`sm_taxi_warehouse` が登録済みのワークスペースに存在）
 - [Lab 07](07-data-agent.md) 完了（`taxi_ride_agent` が **公開済み**）
 - **Node.js**（v20 以上）がローカルにインストール済み（`node --version`）
 
+> 💡 **作業指示だけで実行できます。** アカウント・ワークスペース・接続先 ID は Copilot が自動で補います。
+> 各プロンプトはそのまま貼り付けてください。設定が見つからない場合は [Lab 00 の 0-7](00-prerequisites.md#0-7-自分の-student-番号を一度だけ登録する)を確認します。
+> ブラウザ認証は本人が行います。講師提供のプロキシ URL は番号から生成できないため、配布資料や既存設定から取得できない場合だけ提供が必要です。
+
 > 🎫 **機能注意**: **Fabric Apps（preview）** を使います。テナントで *Fabric Apps（preview）* ワークロードが有効になっており、Fabric 容量（**トライアル可**）が必要です。作成できない場合は講師に確認してください。
 
-このラボでは、**Rayfin CLI** を使って React 製の **Fabric App** を作り、自分の `student<番号>` ワークスペースにデプロイします。アプリには 3 つの要素を載せます。
+このラボでは、**Rayfin CLI** を使って React 製の **Fabric App** を作り、登録済みのワークスペースにデプロイします。アプリには 3 つの要素を載せます。
 
 1. **ダッシュボード** — `sm_taxi_warehouse` のデータで KPI とグラフを表示
 2. **入力フォーム** — 入力データが **Fabric SQL Database → OneLake へ自動ミラー**
@@ -24,7 +28,7 @@ Rayfin で App 作成  →  ダッシュボード  →  入力フォーム(SQL D
 > （`*.webapp.fabricapps.net` で公開）。`data` サービスは **Fabric SQL Database** を作成し、書き込んだデータは
 > **OneLake に自動ミラー**されます。
 
-> 💡 認証はブラウザ（Entra SSO）で、**自分の `student<番号>` アカウント**でサインインします。
+> 💡 認証はブラウザ（Entra SSO）で、**登録済みのアカウント**でサインインします。
 
 ---
 
@@ -32,17 +36,17 @@ Rayfin で App 作成  →  ダッシュボード  →  入力フォーム(SQL D
 
 ## 8-1. Rayfin CLI で Fabric App を作成してサインインする
 
-> 🗣️ **プロンプト**（`student<番号>` は自分のワークスペース名）
+> 🗣️ **プロンプト**
 > ```text
 > Rayfin CLI を使って taxi-dashboard という Fabric App プロジェクトを
-> blankapp テンプレート（Fabric 認証つき）で作成して、
-> student<番号> ワークスペース向けに初期化して。
-> そのあと Rayfin にブラウザでサインインして（student<番号> アカウントで）。
+> blankapp テンプレート（Fabric 認証つき）で作成して初期化して。
+> そのあと Rayfin にブラウザ認証でサインインして。
 > ```
 
 🤖 **Copilot の動き**
-- `npm create @microsoft/rayfin@latest taxi-dashboard --workspace student<番号>`（または `npx rayfin init --template blankapp --auth-methods fabric --workspace student<番号>`）で React + Vite + Tailwind のプロジェクトを生成。
-- `npx rayfin login` を実行 → **ブラウザが開く**ので、自分の `student<番号>` アカウントでサインイン。
+- `npm create @microsoft/rayfin@latest taxi-dashboard --workspace "$WORKSPACE_NAME"`（または `npx rayfin init --template blankapp --auth-methods fabric --workspace "$WORKSPACE_NAME"`）で React + Vite + Tailwind のプロジェクトを生成。
+- `npx rayfin login` を実行 → **ブラウザが開く**ので、登録済みのアカウントでサインイン。
+- `$WORKSPACE_NAME` は Copilot が登録済み設定から設定します。コマンドの入力や置き換えは不要です。
 
 ✅ **期待する結果**
 `taxi-dashboard/` プロジェクトが生成され、`Signed in` と表示される。
@@ -52,7 +56,7 @@ Rayfin で App 作成  →  ダッシュボード  →  入力フォーム(SQL D
 project: taxi-dashboard (blankapp, fabric auth, static hosting)
 ```
 
-> 💡 ブラウザのサインイン画面が出たら、**会社/個人アカウントではなく `student<番号>`** を選んでください。
+> 💡 ブラウザのサインイン画面が出たら、**会社/個人アカウントではなく登録済みのアカウント**を選んでください。
 
 ---
 
@@ -133,6 +137,8 @@ SQL DB に入れた行が、数秒後に OneLake（MirroredWarehouse）側でも
 - 画面右下に**ランチャーボタン**、クリックで**右スライドインのチャットパネル**を実装（候補質問チップ・入力欄）。
 - ブラウザから Fabric Data Agent を**直接は呼べない**（CORS ＋ OpenAI Assistants の多段フロー）ため、
   チャットは **`VITE_AGENT_PROXY_URL`（小さな中継プロキシ）経由**で呼び出します。
+- `taxi_ride_agent` の ID とワークスペース ID は API で特定します。講師配布のプロキシ URL が既存設定にあれば
+  Copilot が設定し、なければ不足を明示します。URL を推測したり、未設定のままチャット接続が完了したと扱ったりしません。
 
 ✅ **期待する結果**
 ドロワー UI が表示される。プロキシ URL を設定すると、`taxi_ride_agent` の**接地（grounded）回答**が返る
@@ -149,20 +155,20 @@ SQL DB に入れた行が、数秒後に OneLake（MirroredWarehouse）側でも
 
 > 🗣️ **プロンプト**
 > ```text
-> taxi-dashboard を student<番号> ワークスペースにデプロイして、
+> taxi-dashboard を Fabric にデプロイして、
 > 公開 URL とポータルリンクを教えて。
 > ```
 
-🤖 **Copilot の動き** … `npx rayfin up --workspace student<番号>` を実行。**AppBackend** アイテムを作成し、
+🤖 **Copilot の動き** … 登録済みの名前を `$WORKSPACE_NAME` に設定し、`npx rayfin up --workspace "$WORKSPACE_NAME"` を実行。**AppBackend** アイテムを作成し、
 静的コンテンツをビルド・アップロードして `*.webapp.fabricapps.net` で公開します。
 
 ✅ **期待する結果**
-`student<番号>` ワークスペースに `taxi-dashboard`（AppBackend）が作成され、公開 URL が表示される。
-URL を開いて **`student<番号>` でサインイン**すると、ダッシュボード・入力フォーム・チャットドロワーが使える。
+登録済みのワークスペースに `taxi-dashboard`（AppBackend）が作成され、公開 URL が表示される。
+URL を開いて **登録済みのアカウントでサインイン**すると、ダッシュボード・入力フォーム・チャットドロワーが使える。
 
 ```text
 🎉 deployed: taxi-dashboard (AppBackend)
-🌐 https://<...>.webapp.fabricapps.net
+🌐 公開 URL: Copilot がデプロイ結果から表示（*.webapp.fabricapps.net）
 ```
 完成イメージ
 
@@ -180,7 +186,7 @@ URL を開いて **`student<番号>` でサインイン**すると、ダッシ�
 ### チャットボットのプロキシ（`server/agent-proxy/`）
 - 構成: **ブラウザ → プロキシ → Data Agent**（OpenAI Assistants: `assistant → thread → message → run → messages`）。
 - Data Agent は **呼び出し元の権限**でデータソースを照会します。**grounded 回答にはデータソースへのアクセスが必要**。
-  - **ユーザー権限のトークン**（自分の `student<番号>` 等、対象データにアクセスできる人）→ 接地回答が返る。
+  - **ユーザー権限のトークン**（登録済みのアカウントなど、対象データにアクセスできる人）→ 接地回答が返る。
   - **サービスプリンシパル**は、このテナントでは **セマンティックモデルの Execute Queries が拒否**されるため、
     そのままでは「authorization error」になります。
 - プロキシは **ホスティングが必要**（例: Azure App Service）。`server/agent-proxy/README.md` に
@@ -192,12 +198,12 @@ URL を開いて **`student<番号>` でサインイン**すると、ダッシ�
 
 ## ✅ チェックポイント
 
-- [ ] Rayfin CLI で `taxi-dashboard` プロジェクトを作り、`student<番号>` でサインインできた
+- [ ] Rayfin CLI で `taxi-dashboard` プロジェクトを作り、登録済みのアカウントでサインインできた
 - [ ] `sm_taxi_warehouse` のデータで KPI・グラフ・スライサーのダッシュボードを作れた
 - [ ] `Add Trip Record` フォームを追加し、`dbo.TripEntries` に保存できた
 - [ ] 入力データが **OneLake（MirroredWarehouse）にミラー**されることを確認できた
 - [ ] 右下ボタンで開く **チャットドロワー**（`taxi_ride_agent`）を追加できた
-- [ ] `student<番号>` ワークスペースに **AppBackend をデプロイ**し、公開 URL で動作確認できた
+- [ ] 登録済みのワークスペースに **AppBackend をデプロイ**し、公開 URL で動作確認できた
 
 ---
 
@@ -206,7 +212,7 @@ URL を開いて **`student<番号>` でサインイン**すると、ダッシ�
 | 症状 | プロンプト例 / 対処 |
 |------|---------------------|
 | `Fabric Apps` が作成できない | テナントで *Fabric Apps（preview）* が有効か、Fabric 容量かを確認（講師に連絡） |
-| `rayfin login` のブラウザで別アカウント | 一度サインアウトし、**`student<番号>`** で入り直す（InPrivate 推奨） |
+| `rayfin login` のブラウザで別アカウント | 一度サインアウトし、**登録済みのアカウント**で入り直す（InPrivate 推奨） |
 | ダッシュボードの数値が全 payment 同じ | 「ディメンション経由ではなく fact の列で集計し直して」 |
 | フォーム保存でテーブルが無い | 先に「`rayfin up` で TripEntry テーブルを作成して」→ 再度送信 |
 | ミラーが見えない | 数十秒待って再確認。DB 名は表示名 `taxi-dashboard`（GUID 付きカタログではない） |

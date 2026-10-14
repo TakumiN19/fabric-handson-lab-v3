@@ -3,9 +3,13 @@
 所要時間: 約 15 分
 前提: [Lab 00](00-prerequisites.md) 完了
 
+Lab 00 の **0-7 で student 番号を登録済み**のため、以降は **作業内容だけ**を指示します。
+アカウント・テナント・ワークスペース名・ID は Copilot が設定から補うので、入力や置き換えは不要です。
+同じ教材フォルダーで Copilot CLI を使ってください。ブラウザ認証や MFA は本人が行います。
+
 このラボでは、まず **Fabric ポータル（Web）** にサインインし、続いて
 **コマンドを手で打つのではなく** GitHub Copilot CLI に **自然言語のプロンプトで指示**して
-**Azure CLI** でもサインインし、自分の Microsoft Fabric ワークスペース（`student<番号>`）に接続します。
+**Azure CLI** でもサインインし、登録済みの Microsoft Fabric ワークスペースに接続します。
 
 > 🤖 **プロンプト駆動とは？**
 > あなたは「やりたいこと」を日本語で伝えるだけ。Copilot CLI が
@@ -30,7 +34,7 @@
 ## 1-1. Fabric ポータル（Web）にサインインする
 
 このあとの Power BI / Data Agent ラボでは、ブラウザの **Fabric ポータル**も使います。
-まず、配布された `studentX` （Xは自席に配布された数字に置き換えてください）アカウントで Fabric ポータルにサインインしておきましょう
+まず、Lab 00 で登録し、Copilot が表示した自分のアカウントで Fabric ポータルにサインインしておきましょう
 （このステップはブラウザ操作です。1-2 以降は Copilot へのプロンプトで進めます）。
 
 > 📘 **詳しい手順は [受講者向け — Microsoft Fabric へのサインイン手順](fabric-portal-login.md) を参照してください。**
@@ -39,32 +43,30 @@
 
 1. ブラウザ（**シークレット / InPrivate ウィンドウ推奨**）で `https://app.fabric.microsoft.com` を開く
 2. 別アカウントでログイン済みなら 右上プロフィール → **Sign out** してから、
-   配布された `studentX@M365x43914722.onmicrosoft.com` でサインイン
-3. 右上プロフィールが `studentX` になり、自分の `studentX` ワークスペースが見えれば OK
+   Copilot が表示した登録済みのアカウントでサインイン
+3. 右上プロフィールが登録済みのアカウントと一致し、登録済みのワークスペースが見えれば OK
 4. **Power BI ラボ（Lab 05・06）を行う場合**は、続けて **Start Fabric trial**（60 日・PPU〔Power BI のユーザー単位ライセンス〕相当）も開始
    （[サインイン手順](fabric-portal-login.md) の「手順 5」参照）
 
-✅ ポータルに自分の `studentX` ワークスペースが表示されれば成功です。
+✅ ポータルに登録済みのワークスペースが表示されれば成功です。
 このあとは **CLI** でもサインインして、プロンプト駆動でワークスペースを操作していきます。
 
 ---
 
 ## 1-2. Azure CLI にサインインする
 
-> 🗣️ **プロンプト**（`student<番号>` は自分に割り当てられた番号に置き換えてください）
+> 🗣️ **プロンプト**
 > ```text
 > Azure CLI にブラウザ認証でサインインして。
-> ユーザーは student<番号>@M365x43914722.onmicrosoft.com を使いたい。
 > ```
->
-> 例: 自分の番号が 3 なら `student3@M365x43914722.onmicrosoft.com` を指定します。
 
 🤖 **Copilot の動き**
+- 参加者設定ファイル `.github/student.local.md` から自分のアカウントとテナントを確認します。
 - `az login`（ブラウザ認証）を実行し、既定のブラウザを開きます。
 - ユーザー名/パスワード直渡しは **MFA（多要素認証）で失敗する**ため使いません。
 
 操作:
-1. 開いたブラウザで自分の `student<番号>@M365x43914722.onmicrosoft.com` を選択（無ければ「別のアカウント」で入力）
+1. 開いたブラウザで登録済みのアカウントを選択（無ければ「別のアカウント」で Copilot が表示したメールアドレスを入力）
 2. パスワード / MFA を入力
 3. 「サインインが完了しました」と出たらタブを閉じる
 
@@ -76,7 +78,7 @@
 ```text
 Name                       TenantId                              User
 -------------------------  ------------------------------------  ----------------------------------
-N/A(tenant level account)  e6c1292e-65b7-4e2d-9e1b-13f24e7753fd  student<番号>@M365x43914722.onmicrosoft.com
+N/A(tenant level account)  e6c1292e-65b7-4e2d-9e1b-13f24e7753fd  （登録済みのメールアドレス）
 ```
 
 > 💡 `No subscriptions found` でサインインが止まる場合は、**サブスクリプション無しのテナント**としてサインインします。
@@ -96,7 +98,7 @@ N/A(tenant level account)  e6c1292e-65b7-4e2d-9e1b-13f24e7753fd  student<番号>
 > ```
 >
 > 表示された URL（`https://microsoft.com/devicelogin`）をブラウザで開き、ターミナルに出たコードを入力して、
-> `student<番号>@M365x43914722.onmicrosoft.com` でサインインします。
+> Copilot が表示した登録済みのアカウントでサインインします。
 
 ---
 
@@ -110,7 +112,7 @@ N/A(tenant level account)  e6c1292e-65b7-4e2d-9e1b-13f24e7753fd  student<番号>
 🤖 **Copilot の動き** … `az account show` を実行して整形表示します。
 
 ✅ **期待する結果**
-ユーザーが自分の `student<番号>@M365x43914722.onmicrosoft.com`、テナントが
+ユーザーが登録済みのアカウント、テナントが
 `e6c1292e-65b7-4e2d-9e1b-13f24e7753fd` になっている。
 
 > 別ユーザーになっていたら 1-2 のプロンプトでサインインし直します。
@@ -119,25 +121,27 @@ N/A(tenant level account)  e6c1292e-65b7-4e2d-9e1b-13f24e7753fd  student<番号>
 
 ## 1-4. ワークスペースに接続してアイテムを確認する
 
-> 🗣️ **プロンプト**（`student<番号>` は自分のワークスペース名に置き換えてください）
+> 🗣️ **プロンプト**
 > ```text
-> student<番号> という Fabric ワークスペースに接続して、
-> 含まれているアイテム（Lakehouse や SQL Endpoint など）を一覧して。
+> Fabric に接続して、アイテムを一覧して。
 > ```
 
 🤖 **Copilot の動き**
 - `fabric-consumption`（または `fabric-skills`）スキルが起動。
-- Fabric トークンを取得 → ワークスペース一覧から `student<番号>` を名前で特定 →
-  その Workspace ID でアイテムを一覧します。
+- サインイン中のユーザーとテナントを登録済みの設定と照合します。
+- Fabric トークンを取得 → ワークスペース一覧から登録済みのワークスペース名と完全一致する名前を特定 →
+  その Workspace ID でアイテムを一覧します。一意に特定できなければ操作を止め、他のワークスペースは選びません。
+- API で確認できたワークスペース名と Workspace ID だけを参加者設定ファイルに追記します。
+  トークンは保存しません。以降も操作前に Workspace ID と名前の対応を照合します。
 
 ✅ **期待する結果**
-自分の `student<番号>` ワークスペースが名前で特定でき、その Workspace ID が表示される。
+登録済みのワークスペースが名前で特定でき、その Workspace ID が表示される。
 
 このハンズオンを始めたばかりの段階では、ワークスペースは **まだ空** です。
 Lakehouse やテーブルは **これから各ラボで作成していく** ので、この時点ではアイテムは表示されません。
 
 ```text
-ワークスペース: student<番号> | <Workspace ID>
+ワークスペース: （登録済みの名前） | （API で確認した Workspace ID）
 （アイテムはまだありません — Lab 02 以降で作成します）
 ```
 
@@ -152,7 +156,7 @@ Lakehouse やテーブルは **これから各ラボで作成していく** の�
 接続できたら、続けて自然言語で指示するだけで探索できます。例:
 
 ```text
-student<番号> のワークスペース ID を覚えておいて。今後この中で作業するよ。
+登録済みの自分のワークスペース名と Workspace ID を教えて。
 ```
 
 ```text
@@ -169,8 +173,10 @@ student<番号> のワークスペース ID を覚えておいて。今後この
 このワークスペースの SQL Endpoint の接続情報（サーバー名）を教えて。
 ```
 
-> 📌 Copilot はワークスペース ID やアイテム ID を会話の中で覚えてくれるので、
-> 一度特定すれば以降は「あのワークスペースの〜」で通じます。
+> 📌 student 番号と Workspace ID は参加者設定ファイルに保存しているので、
+> 以降は「自分のワークスペース」で通じます。新しい会話では `/instructions` で教材の共通指示が有効か確認してください。
+> アイテム ID は必要に応じて自分のワークスペース内で取得します。設定を読み込めない場合は
+> Lab 00 の 0-7 を確認し、番号や Workspace ID を推測したまま作業しないでください。
 
 ---
 
@@ -178,6 +184,7 @@ student<番号> のワークスペース ID を覚えておいて。今後この
 
 プロンプト駆動でも、内部では次のような `az` / REST 呼び出しが走っています。
 仕組みを理解したい人向けの参考です（手で打つ必要はありません）。
+以下の `$WORKSPACE_NAME` / `$WS_ID` は、Copilot が登録済みの設定と API の確認結果から設定します。手入力は不要です。
 
 ```bash
 # サインイン（ブラウザ認証）
@@ -189,20 +196,21 @@ az account show --query "{user:user.name, tenant:tenantId}" -o json
 # Fabric トークン取得 → ワークスペースを名前で特定
 TOKEN=$(az account get-access-token --resource https://api.fabric.microsoft.com --query accessToken -o tsv)
 curl -s -H "Authorization: Bearer $TOKEN" "https://api.fabric.microsoft.com/v1/workspaces" \
-  | python3 -c "import sys,json; [print(w['displayName'], w['id']) for w in json.load(sys.stdin)['value'] if w['displayName'].lower()=='student<番号>']"  # ← 自分のワークスペース名に置き換え
+  | python3 -c "import sys,json; [print(w['displayName'], w['id']) for w in json.load(sys.stdin)['value'] if w['displayName']==sys.argv[1]]" "$WORKSPACE_NAME"
 
 # Workspace ID でアイテム一覧
-curl -s -H "Authorization: Bearer $TOKEN" "https://api.fabric.microsoft.com/v1/workspaces/<WS_ID>/items"
+curl -s -H "Authorization: Bearer $TOKEN" "https://api.fabric.microsoft.com/v1/workspaces/$WS_ID/items"
 ```
 
 ---
 
 ## ✅ チェックポイント
 
-- [ ] Fabric ポータル（Web）に `studentX` でサインインし、自分のワークスペースが見えた
+- [ ] Fabric ポータル（Web）に登録済みのアカウントでサインインし、自分のワークスペースが見えた
 - [ ] プロンプトで Azure CLI にサインインできた（ブラウザ認証）
 - [ ] サインインユーザーが目的のアカウントになっている
-- [ ] プロンプトで自分の `student<番号>` ワークスペースに接続できた
+- [ ] プロンプトで登録済みのワークスペースに接続できた
+- [ ] 確認済みのワークスペース名と Workspace ID が参加者設定ファイルに保存された
 - [ ] ワークスペースのアイテム一覧を確認できた（この時点では空でOK / 作成済みなら表示される）
 
 ---
@@ -211,7 +219,8 @@ curl -s -H "Authorization: Bearer $TOKEN" "https://api.fabric.microsoft.com/v1/w
 
 | 症状 | プロンプト例 / 対処 |
 |------|---------------------|
-| 別のアカウントでサインインしている | 「別のユーザー `student<番号>@M365x43914722.onmicrosoft.com` でサインインし直して」 |
+| 別のアカウントでサインインしている | 「登録済みの自分のアカウントでサインインし直して」 |
+| 自分の番号やワークスペースを聞き直される | 同じ教材フォルダーで起動し、`/instructions` で `.github/copilot-instructions.md` が有効か確認。`.github/student.local.md` がなければ Lab 00 の 0-7 を再実行 |
 | ブラウザが開かない（SSH / リモート） | 「デバイスコード方式でサインインして」→ Copilot が `az login --use-device-code` を実行 |
 | `No subscriptions found` と出る | 「サブスクリプション無しのテナントとしてサインインして」→ `az login --allow-no-subscriptions` |
 | ワークスペースが見つからない | 「今アクセスできるワークスペースを全部一覧して」で確認 → 正しいテナント/名前か再確認 |

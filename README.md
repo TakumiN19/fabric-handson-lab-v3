@@ -21,7 +21,7 @@ Microsoft Fabricを**自然言語のプロンプトだけで操作する**ハン
 
 ## 🚀 GitHub Codespacesで開始（推奨）
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/TakumiN19/fabric-handson-lab?quickstart=1)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/TakumiN19/fabric-handson-lab-v3?quickstart=1)
 
 上のボタンからCodespaceを作成すると、Dev Containerのセットアップ完了まで待機した後、
 次のローカルツールを検証済みバージョンで利用できます。
@@ -139,7 +139,7 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 > [!TIP]
 > GitはZIPで教材を取得する場合は任意です。Power BI Desktopも主経路では使用しません。
 > DockerはFabric Appsをローカルのフルスタックで動かす場合のみ任意で使用します。
-> 現在の配布用`studentX`アカウントはMFA不要のため、Microsoft Authenticatorは講師から
+> 現在の配布用アカウントはMFA不要のため、Microsoft Authenticatorは講師から
 > 別途案内された場合のみ準備してください。
 
 ---
@@ -148,10 +148,10 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 
 > [!IMPORTANT]
 > **共有の有料Fabric容量**と、受講者個人の**Power BI Pro／PPU相当ライセンス**は別の要件です。
-> 本ワークショップでは、講師が用意した有料F32容量に`studentX`ワークスペースを配置し、
+> 本ワークショップでは、講師が用意した有料F32容量に各受講者のワークスペースを配置し、
 > 必要な受講者だけがPower BI個人トライアルを有効化します。
 
-- [ ] 有料F32容量が稼働中で、全`studentX`ワークスペースがその容量に割り当てられている
+- [ ] 有料F32容量が稼働中で、全受講者のワークスペースがその容量に割り当てられている
 - [ ] 各受講者が自分のワークスペースでアイテムを作成でき、Fabric Apps用に`Contributor`／`Member`／`Admin`のいずれかのロールを持つ
 - [ ] Lab 05・06・09の受講者にPower BI Pro／PPU相当の個人ライセンスがある
 - [ ] Data Agent用に、[有料F2以上またはP1以上の容量](https://learn.microsoft.com/fabric/data-science/data-agent-mcp-server#prerequisites)を使用している
@@ -228,32 +228,33 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 
 | 項目 | 値 |
 |------|-----|
-| サインインユーザー | `student<番号>@M365x43914722.onmicrosoft.com`（各自に配布） |
+| サインインユーザー | Lab 00で番号から自動生成・保存する配布用アカウント |
 | テナント ID | `e6c1292e-65b7-4e2d-9e1b-13f24e7753fd` |
-| ワークスペース | `student<番号>`（自分に割り当てられた番号） |
-| Workspace ID | 自分のワークスペース ID（Lab 01 で確認） |
+| ワークスペース | Lab 00で番号から自動生成・保存する自分のワークスペース名 |
+| Workspace ID | Lab 01でCopilotがAPIから特定・保存（手入力不要） |
 | Lakehouse | `taxi_lakehouse`（Lab 02 で作成） |
 | Fabric容量 | 講師が用意した共有の**有料F32** |
 | Power BI個人ライセンス | Lab 05・06・09のみPro／PPU相当が必要 |
 
-> ⚠️ `student<番号>` は各受講者に割り当てられた番号（例: `student3`）に読み替えてください。
-> Lakehouse・Warehouse などのアイテムは、各ラボで自分のワークスペースに作成します。
+> 💡 **student番号の入力はLab 00の登録プロンプトで一度だけです。**
+> アカウント名・ワークスペース名はCopilotが自動生成して保存し、以降は作業指示だけで使います。
+> Lakehouse・WarehouseなどのアイテムIDやSQL接続先もAPIから取得するため、各Labでの入力・置き換えは不要です。
 
 ---
 
 ## 🔑 受講者向け: Fabric へのサインイン（最初に実施）
 
-ハンズオンを始める前に、配布された `studentX` アカウントで Microsoft Fabric（Web ポータル）に
+Lab 00で番号を登録したあと、Copilotが表示した自分のアカウントでMicrosoft Fabric（Web ポータル）に
 サインインします。手順は **[受講者向け — Microsoft Fabric へのサインイン手順](labs/fabric-portal-login.md)** を参照してください。
 
 > [!TIP]
 > すでに会社・個人アカウントでサインインしている場合は、Profileパネルの**Sign out**で
-> サインアウトしてから`studentX`アカウントに切り替えます（シークレット／InPrivateウィンドウ推奨）。
+> サインアウトしてから登録済みのアカウントに切り替えます（シークレット／InPrivateウィンドウ推奨）。
 
 > [!IMPORTANT]
 > **Lab 05・06・09（Power BI）**を行う場合は、サインイン後にProfileパネルから
 > Power BI個人トライアル（60日・PPU相当）を開始してください。
-> `studentX`ワークスペースは講師の有料F32容量上に置いたままにし、
+> 自分のワークスペースは講師の有料F32容量上に置いたままにし、
 > 別のFabric Trial capacityへ移動しないでください。
 
 ---
@@ -264,10 +265,10 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 
 | # | ラボ | 内容 | 状態 |
 |---|------|------|------|
-| — | [Fabric へのサインイン（受講者向け）](labs/fabric-portal-login.md) | 配布された `studentX` アカウントで Fabric Web ポータルにサインイン | ✅ |
-| 00 | [前提条件のセットアップ](labs/00-prerequisites.md) | ツール確認・プラグイン導入 | ✅ |
-| 01 | [サインインとワークスペース接続](labs/01-login-and-connect.md) | ブラウザ認証で `az login`、自分の `student<番号>` に接続 | ✅ |
-| 02 | [Lakehouse 作成・データ取り込み・変換](labs/02-lakehouse-load-and-transform.md) | Lakehouse 作成 → Parquet アップロード → Delta 変換（列削除・null 除去） | ✅ |
+| — | [Fabric へのサインイン（受講者向け）](labs/fabric-portal-login.md) | 登録済みのアカウントで Fabric Web ポータルにサインイン | ✅ |
+| 00 | [前提条件のセットアップ](labs/00-prerequisites.md) | ツール確認・プラグイン導入・student番号を一度だけ登録 | ✅ |
+| 01 | [サインインとワークスペース接続](labs/01-login-and-connect.md) | 作業指示だけでブラウザ認証・登録済みワークスペースへの接続 | ✅ |
+| 02 | [Lakehouse 作成・データ取り込み・変換](labs/02-lakehouse-load-and-transform.md) | 作成・取り込み・加工・保存と、結果の確認を2つの短いプロンプトで実行。派生6列の追加・固定レコード照合・品質検証 | ✅ |
 | 03 | [ADLS Gen2 + OneLake ショートカット](labs/03-adls-shortcut.md) | 講師準備済みの共有ADLS Gen2 → Fabric接続 → OneLakeショートカット作成 | ✅ |
 | 04 | [Warehouse ディメンション＆ファクトテーブル作成](labs/04-warehouse-dimensions.md) | Warehouse 作成 → ディメンション 5 本 → fact_greentrip_copilot (CTAS) | ✅ |
 | 05 | [セマンティックモデル作成](labs/05-semantic-model.md) | Warehouse テーブルからセマンティックモデル構築・リレーションシップ定義 | ✅ |
@@ -283,10 +284,10 @@ npm install -g @microsoft/powerbi-report-authoring-cli@0.1.4
 ## ▶️ 進め方
 
 1. 講師は上記の事前確認を完了し、容量・テナント設定・ADLS・中継プロキシ・ネットワークを確認する
-2. 受講者はCodespacesを起動するか、このREADMEの必須環境を確認してから、[Lab 00](labs/00-prerequisites.md)でツールとプラグインを準備する
-3. [Fabric へのサインイン](labs/fabric-portal-login.md)で、配布された`studentX`アカウントでFabricにサインインする
+2. 受講者はCodespacesを起動するか、このREADMEの必須環境を確認してから、[Lab 00](labs/00-prerequisites.md)でツールとプラグインを準備し、student番号を一度だけ登録する
+3. [Fabric へのサインイン](labs/fabric-portal-login.md)で、Copilotが表示した登録済みのアカウントでFabricにサインインする
 4. [Lab 01](labs/01-login-and-connect.md)で**プロンプトから**サインインし、自分のワークスペースへ接続する
-5. Lab 02以降も、各ステップの自然言語プロンプトをCopilot CLIへ入力して進める
+5. Lab 02以降も、各ステップの作業指示をそのままCopilot CLIへ入力して進める（アカウント・ワークスペース・IDの入力不要）
 6. `⚠️`のLabへ進む前に、「現在の既知制約」と講師からの更新案内を確認する
 
 各ステップは 🗣️ プロンプト → 🤖 Copilot の動き → ✅ 期待する結果 で構成。

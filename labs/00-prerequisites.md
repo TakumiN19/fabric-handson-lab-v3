@@ -41,17 +41,17 @@
 ハンズオンの手順書とサンプルデータ（`data/` の Parquet ファイルなど）を、リポジトリごとローカルに用意します。
 
 1. ブラウザで教材リポジトリを開きます。
-   [https://github.com/TakumiN19/fabric-handson-lab](https://github.com/TakumiN19/fabric-handson-lab)
+   [https://github.com/TakumiN19/fabric-handson-lab-v3](https://github.com/TakumiN19/fabric-handson-lab-v3)
 2. 緑色の **「< > Code」** ボタンをクリックし、**「Download ZIP」** を選びます。
 3. ダウンロードした ZIP ファイルを、分かりやすい場所（デスクトップなど）に **展開（解凍）** します。
    - Windows: ZIP を右クリック →「すべて展開」
    - macOS: ZIP をダブルクリック
-4. `fabric-handson-lab-main` というフォルダーが作成されます。これを次の手順（0-3）で VS Code から開きます。
+4. `fabric-handson-lab-v3-main` というフォルダーが作成されます。これを次の手順（0-3）で VS Code から開きます。
 
 > 💡 Git を使う場合は、ZIP の代わりに次のコマンドでも取得できます（任意）。
 >
 > ```bash
-> git clone https://github.com/TakumiN19/fabric-handson-lab.git
+> git clone https://github.com/TakumiN19/fabric-handson-lab-v3.git
 > ```
 
 ---
@@ -63,7 +63,7 @@
 1. **VS Code を起動**します。
    - Windows: スタートメニューで「Visual Studio Code」を検索して起動
    - macOS: Launchpad またはアプリケーションフォルダーから「Visual Studio Code」を起動
-2. **0-2 で展開したフォルダー**（`fabric-handson-lab-main`）を開きます: メニュー **ファイル > フォルダーを開く…**（File > Open Folder…）。
+2. **0-2 で展開したフォルダー**（`fabric-handson-lab-v3-main`）を開きます: メニュー **ファイル > フォルダーを開く…**（File > Open Folder…）。
 3. **ターミナルを開きます**: メニュー **ターミナル > 新しいターミナル**（Terminal > New Terminal）を選択。
    - ショートカット: <kbd>Ctrl</kbd>+<kbd>`</kbd>（バッククォート）。日本語キーボードでは <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>@</kbd> の場合があります。
 4. ウィンドウ下部に **ターミナルパネル** が開きます。以降のコマンドは、このターミナルに入力します。
@@ -72,55 +72,87 @@
 
 ---
 
-## 0-4. ツールのバージョンを確認
+## 0-4. ツールをインストールしてバージョンを確認
 
-VS Code のターミナルで以下を実行し、いずれもバージョンが表示されることを確認します。
+**最初に Node.js / npm を準備してから、その他のツールを導入します。**
+Node.js は Copilot CLI を `npm` で入れる場合や、Lab 06 のレポート作成スキル（`powerbi-report-authoring`）などで使用します。
+本ハンズオンでは **Node.js 22.x または 24.x の LTS 版**を使用します。`npm` は Node.js に同梱されます。
 
-```bash
-# GitHub Copilot CLI
-copilot --version
+> 💡 `winget` 自体の実行には Node.js は不要です。`npm install` を実行する場合は、先に Node.js / npm の導入が必要です。
 
-# Azure CLI
-az version
+### Windows（PowerShell）
 
-# Python 3（REST API レスポンスの整形に使用）
-python3 --version
+1. **Node.js / npm をインストール**します。導入済みの場合は、バージョン確認へ進みます。
 
-# Node.js / npm（Copilot CLI を npm で入れる場合・一部スキルで使用、Node.js 22 以上）
-node --version
-npm --version
-```
+   ```powershell
+   winget install OpenJS.NodeJS.LTS
+   ```
+
+   `winget` が使えない場合は、[nodejs.org のダウンロード](https://nodejs.org/en/download)から **22.x または 24.x LTS** の Windows 用インストーラーを実行します。
+
+2. **VS Code を終了して起動し直し**、新しい PowerShell ターミナルでバージョンを確認します。
+
+   ```powershell
+   node --version
+   npm --version
+   ```
+
+3. **その他の未導入ツールをインストール**します。
 
 | ツール | 未インストール時の対処 |
 |--------|------------------------|
-| GitHub Copilot CLI | macOS/Linux: `brew install copilot-cli` / Windows: `winget install GitHub.Copilot`（PowerShell v6+）/ npm（全OS・Node.js 22+）: `npm install -g @github/copilot` / [公式手順](https://docs.github.com/ja/copilot/how-tos/set-up/install-copilot-cli) |
-| Azure CLI | macOS: `brew install azure-cli` / Windows: `winget install Microsoft.AzureCLI` / [公式手順](https://learn.microsoft.com/cli/azure/install-azure-cli) |
-| Python 3 | macOS には標準搭載。なければ `brew install python` / Windows: [python.org](https://www.python.org/downloads/) からインストーラーを実行 |
-| Node.js / npm | 下の「💡 **Node.js のインストール**」を参照（Windows / bash 別の手順・**Node.js 22 以上**） |
+| PowerShell 7 | `winget install Microsoft.PowerShell`。導入後、VS Code のターミナルのプロファイルで PowerShell 7 を選択 |
+| GitHub Copilot CLI | `winget install GitHub.Copilot`（PowerShell v6+）または `npm install -g @github/copilot` / [公式手順](https://docs.github.com/ja/copilot/how-tos/set-up/install-copilot-cli) |
+| Azure CLI | `winget install Microsoft.AzureCLI` / [公式手順](https://learn.microsoft.com/cli/azure/install-azure-cli) |
+| Python 3 | [python.org](https://www.python.org/downloads/) から Python 3.12 または 3.13 のインストーラーを実行（「Add python.exe to PATH」を選択） |
 
-> 💡 **Node.js のインストール** — `npm` で Copilot CLI を入れる場合や、Lab 06 のレポート作成スキル（`powerbi-report-authoring`）で使用します（**Node.js 22 以上**。`npm` は Node.js に同梱されます）。
->
-> **Windows（PowerShell）**
->
-> ```powershell
-> winget install OpenJS.NodeJS.LTS
-> ```
->
-> インストール後、PowerShell を開き直してから `node --version` で確認します。
->
-> **bash 環境（macOS / Linux / WSL）**
->
-> ```bash
-> # macOS（Homebrew）
-> brew install node
->
-> # Linux / WSL（nvm でユーザー権限のまま導入）
-> curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
-> # 表示される案内に従い、ターミナルを開き直してから:
-> nvm install --lts
-> ```
->
-> うまくいかない場合は [nodejs.org のダウンロード](https://nodejs.org/en/download) からインストーラーでも導入できます。
+4. インストール後は **VS Code を再起動**し、新しい PowerShell ターミナルで確認します。
+
+   ```powershell
+   copilot --version
+   az version
+   python --version
+   ```
+
+   `python` が見つからない場合は `py --version` でも確認できます。
+
+### macOS / Linux / WSL（bash / zsh）
+
+1. **Node.js / npm をインストール**します。導入済みの場合は、バージョン確認へ進みます。
+
+   - **macOS**: [nodejs.org のダウンロード](https://nodejs.org/en/download)から **22.x または 24.x LTS** の macOS 用インストーラーを実行します。
+   - **Linux / WSL**: nvm でユーザー権限のまま導入します。
+
+     ```bash
+     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
+     # 表示される案内に従い、ターミナルを開き直してから:
+     nvm install 24
+     ```
+
+2. 新しいターミナルでバージョンを確認します。
+
+   ```bash
+   node --version
+   npm --version
+   ```
+
+3. **その他の未導入ツールをインストール**します。
+
+| ツール | 未インストール時の対処 |
+|--------|------------------------|
+| GitHub Copilot CLI | macOS / Linux（Homebrew 導入済み）: `brew install copilot-cli` / 全環境: `npm install -g @github/copilot` / [公式手順](https://docs.github.com/ja/copilot/how-tos/set-up/install-copilot-cli) |
+| Azure CLI | macOS: `brew install azure-cli` / Linux・WSL: [公式手順](https://learn.microsoft.com/cli/azure/install-azure-cli) |
+| Python 3 | Python 3.12 または 3.13 を導入。macOS（Homebrew）: `brew install python@3.13` / Linux・WSL: [Python 公式サイト](https://www.python.org/downloads/)または OS のパッケージ管理ツールで導入 |
+
+4. 新しいターミナルで確認します。
+
+   ```bash
+   copilot --version
+   az version
+   python3 --version
+   ```
+
+   Homebrew の Python 3.13 を使う場合は `python3.13 --version` でも確認できます。
 
 ---
 
@@ -183,6 +215,39 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 
 ---
 
+## 0-7. 自分の student 番号を一度だけ登録する
+
+Copilot CLI のプロンプトに、次を貼り付けます。**`<番号>` を一か所だけ、自分に割り当てられた番号に置き換えてください。**
+例: 番号が 3 なら、最初の行を「私の student 番号は 3 です。」にします。
+先頭に 0 がある番号は、配布された表記のまま指定します。
+
+```text
+私の student 番号は <番号> です。
+この番号を記憶して、以降の全 Lab で自分のアカウントとワークスペースに自動で反映してください。
+```
+
+教材の共通指示（`.github/copilot-instructions.md`）に従い、Copilot が番号から
+**アカウント名とワークスペース名を自動生成**して、`.github/student.local.md` に保存します。
+例えば番号が 3 なら、アカウントは `student3@M365x43914722.onmicrosoft.com`、
+ワークスペース名は `student3` になります。**これらを別途入力する必要はありません。**
+
+**表示された設定が配布されたアカウントと一致することを確認**したら、そのまま Lab 01 へ進みます。
+参加者設定の保存だけでは、Copilot CLI の再起動は不要です。
+
+> 💡 設定が保存されない場合は、`/instructions` で教材の `.github/copilot-instructions.md` が有効か確認します。
+> 教材の共通指示を追加・更新したあとに既存の Copilot セッションを使っている場合は、
+> `/exit` で終了し、同じ教材フォルダーで `copilot` を起動し直してから登録プロンプトを送ります。
+
+> 💡 この設定は会話中の記憶だけでなく、**この教材フォルダー内のローカルファイル**に保存します。
+> 同じフォルダーで新しい会話を始めても利用できます。別の PC や新しい Codespace には自動では引き継がれません。
+> このファイルは `.gitignore` の対象なので Git にはコミットしません。共有・アップロードもしないでください。
+> 番号を変更する場合だけ、この登録プロンプトを新しい番号で再実行し、以前の Workspace ID は削除してから再接続します。
+
+以降のプロンプトは、**番号を入力せず、そのまま貼り付けて使えます**。
+ブラウザのサインインや MFA は引き続き自分で行います。
+
+---
+
 ## ✅ チェックポイント
 
 - [ ] 教材リポジトリをZIPで展開した、またはCodespaceで開いた
@@ -190,5 +255,6 @@ GitHub Copilot CLI に Fabric スキルのマーケットプレースを追加�
 - [ ] `copilot` を起動し、`/login` で GitHub アカウントにサインインできた
 - [ ] `/model` でモデルを **Auto** に設定した
 - [ ] `/plugin list` に `fabric-skills` と `powerbi-authoring` が表示される
+- [ ] student 番号を一度だけ伝え、自動生成・保存された自分のアカウントとワークスペース名を確認した
 
 すべて確認できたら **[Lab 01 — サインインとワークスペース接続](01-login-and-connect.md)** に進みます。

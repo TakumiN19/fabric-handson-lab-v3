@@ -3,8 +3,11 @@
 所要時間: 約 20 分  
 前提: [Lab 04](04-warehouse-dimensions.md) 完了（`taxi_warehouse` に 6 テーブルが存在すること）
 
+> 💡 **作業指示だけで実行できます。** アカウント・ワークスペース・接続先 ID は Copilot が自動で補います。
+> 各プロンプトはそのまま貼り付けてください。設定が見つからない場合は [Lab 00 の 0-7](00-prerequisites.md#0-7-自分の-student-番号を一度だけ登録する)を確認します。
+
 > 🎫 **ライセンス注意**: セマンティックモデルの作成には **Pro / PPU 相当**が必要です。
-> `studentX` は [Fabric サインイン手順](fabric-portal-login.md) の「手順 5」で **60 日トライアル**を開始してください（Fabric Free では作成不可）。
+> 登録済みのアカウントで [Fabric サインイン手順](fabric-portal-login.md) の「手順 5」に従い、**60 日トライアル**を開始してください（Fabric Free では作成不可）。
 
 このラボでは Fabric Warehouse のテーブルを使って Power BI セマンティックモデルを作成し、
 ディメンションテーブルとファクトテーブルのリレーションシップを定義します。
@@ -40,7 +43,7 @@ dimension_PaymentType（将来用）
 > 🗣️ **プロンプト**
 > ```text
 > taxi_warehouse の以下のテーブルを使って、
-> sm_taxi_warehouse という名前のセマンティックモデルを student<番号> ワークスペースに作って。
+> sm_taxi_warehouse という名前のセマンティックモデルを作って。
 >
 > テーブル:
 > - fact_greentrip_copilot（ファクト）
@@ -76,7 +79,7 @@ SemanticModel: sm_taxi_warehouse
 
 > 🗣️ **プロンプト**
 > ```text
-> student<番号> ワークスペースのセマンティックモデル一覧を表示して。
+> セマンティックモデル一覧を表示して。
 > ```
 
 🤖 **Copilot の動き**
@@ -183,13 +186,11 @@ table fact_greentrip_copilot
 
 	partition fact_greentrip_copilot = m
 		mode: import
-		source =
-			let
-				Source = Sql.Database("<DW_SERVER>", "taxi_warehouse"),
-				Data = Source{[Schema="dbo",Item="fact_greentrip_copilot"]}[Data]
-			in
-				Data
+		... （source の M 式は接続情報を取得後に Copilot が生成）
 ```
+
+パーティションの `source` には、Copilot が `taxi_warehouse` の API 応答から取得した SQL サーバー名を使って
+`Sql.Database` と `dbo.fact_greentrip_copilot` を参照する M 式を生成します。サーバー名の入力・置き換えは不要です。
 
 > 💡 **設計ポイント**
 > - `fromColumn` = 多側（ファクト）、`toColumn` = 一側（ディメンション）（**カーディナリティ**＝多対一）
@@ -210,7 +211,7 @@ table fact_greentrip_copilot
 ## 5-3. Fabric Portal でモデルを確認する（任意）
 
 1. [Fabric Portal](https://app.fabric.microsoft.com) を開く
-2. `student<番号>` ワークスペース → `sm_taxi_warehouse` を選択
+2. 登録済みのワークスペース → `sm_taxi_warehouse` を選択
 3. **「データモデルを開く」** をクリック
 4. リレーションシップビューでテーブル間の接続を確認
 
@@ -221,7 +222,7 @@ table fact_greentrip_copilot
 ## ✅ チェックポイント
 
 - [ ] TMDL ファイルが正しく生成された
-- [ ] `sm_taxi_warehouse` が student<番号> ワークスペースに作成された
+- [ ] `sm_taxi_warehouse` が登録済みのワークスペースに作成された
 - [ ] 4 本のリレーションシップが定義されている
   - [ ] `fact.VendorID` → `dimension_VendorID.VendorID`
   - [ ] `fact.RatecodeID` → `dimension_RatecodeID.RatecodeID`

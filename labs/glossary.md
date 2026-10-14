@@ -24,8 +24,8 @@
 Fabric の「ワークスペース」の中に作る部品（アイテム）です。
 
 ### ワークスペース（Workspace）
-Fabric でアイテム（Lakehouse・Warehouse・レポートなど）をまとめて置く**作業領域**。受講者ごとに `student<番号>` が割り当てられます。
-- **本ハンズオン**: Lab 01 で自分の `student<番号>` ワークスペースに接続し、以降すべての成果物をこの中に作ります。
+Fabric でアイテム（Lakehouse・Warehouse・レポートなど）をまとめて置く**作業領域**。受講者ごとに専用のワークスペースが割り当てられます。
+- **本ハンズオン**: Lab 00 で student 番号を一度だけ登録し、Lab 01 で Copilot が対応するワークスペースに接続します。以降すべての成果物をこの中に作ります。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/fabric/fundamentals/workspaces)
 
 ### Lakehouse（レイクハウス）
@@ -40,7 +40,7 @@ Fabric でアイテム（Lakehouse・Warehouse・レポートなど）をまと�
 
 ### SQL Endpoint（SQL 分析エンドポイント）
 Lakehouse のテーブルを **読み取り専用の T-SQL で問い合わせる**ための接続口。Lakehouse を作ると自動で付いてきます。
-- **本ハンズオン**: Lab 02 の 2-6 で行数や null 件数を SQL で確認するときに使います。
+- **本ハンズオン**: Lab 02 の 2-2 で行数・加工結果の検証と時間帯別集計を SQL で確認するときに使います。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/fabric/data-engineering/lakehouse-sql-analytics-endpoint)
 
 ### SQL Database（Fabric SQL Database）
@@ -118,7 +118,7 @@ Spark / Delta の**タイムゾーン情報を持たない日時型**（timestam
 
 ### Spark / PySpark
 **Spark** は大規模データを分散処理するエンジン。**PySpark** はその Python 版 API です。
-- **本ハンズオン**: Lab 02 でデータの読み込み・列削除・null 除去・Delta 保存を PySpark で実行します（Copilot がコード生成）。
+- **本ハンズオン**: Lab 02 で読み込み・列削除・null 除去・日付や乗車時間などの派生列追加・Delta 保存をまとめて実行します（Copilot がコード生成）。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/fabric/data-engineering/spark-compute)
 
 ### Livy API
@@ -192,7 +192,7 @@ Microsoft の SQL 方言（Transact-SQL）。標準 SQL に変数・制御構文
 
 ### データ変換（クレンジング）
 生データを使える形に整える処理。**列削除**（不要な列を捨てる）、**null（欠損値）除去**（値が無い行を捨てる）、型変換、結合などを指します。
-- **本ハンズオン**: Lab 02 で `ehail_fee` 列の削除と `passenger_count` が null の行の削除を行います。
+- **本ハンズオン**: Lab 02 で `ehail_fee` 列の削除と `passenger_count` が null の行の削除に加え、日付・時間帯・月・乗車時間・距離あたり料金・乗客区分を追加し、処理前後の件数を検証します。
 - 📖 [Microsoft Learn（Lakehouse）](https://learn.microsoft.com/fabric/data-engineering/lakehouse-overview)
 
 ### ディメンション / ファクト（Dimension / Fact）
@@ -303,7 +303,7 @@ Power BI セマンティックモデルを**フォルダー＋テキスト（TMD
 
 ### Microsoft Entra ID（旧 Azure AD）
 Microsoft のクラウド**ID 管理サービス**。サインインや権限の基盤です。
-- **本ハンズオン**: `studentX` アカウントや SSO の認証基盤として使われます。
+- **本ハンズオン**: 登録済みの配布用アカウントや SSO の認証基盤として使われます。
 - 📖 [Microsoft Learn](https://learn.microsoft.com/entra/fundamentals/whatis)
 
 ### テナント（Tenant）

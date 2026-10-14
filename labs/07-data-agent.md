@@ -1,7 +1,10 @@
 # Lab 07 — 付録：Data Agent 作成（プロンプト駆動）
 
 所要時間: 約 20 分
-前提: [Lab 05](05-semantic-model.md) 完了（`sm_taxi_warehouse` セマンティックモデルが自分の `student<番号>` ワークスペースに存在すること）
+前提: [Lab 05](05-semantic-model.md) 完了（`sm_taxi_warehouse` セマンティックモデルが登録済みのワークスペースに存在すること）
+
+> 💡 **作業指示だけで実行できます。** アカウント・ワークスペース・接続先 ID は Copilot が自動で補います。
+> 各プロンプトはそのまま貼り付けてください。設定が見つからない場合は [Lab 00 の 0-7](00-prerequisites.md#0-7-自分の-student-番号を一度だけ登録する)を確認します。
 
 > 🎫 **機能 / ライセンス注意**: Data Agent は Fabric の **Copilot / AI 機能**です。テナントで AI 機能が有効になっており、Fabric 容量（**トライアル可**）が必要です。作成できない場合は講師に確認してください。
 
@@ -16,7 +19,7 @@ Data Agent 作成  →  セマンティックモデル接続  →  指示＋例�
 > Data Agent は Fabric の **AI Skill ワークロード**です。Copilot CLI は **Fabric ノートブック / Livy セッション**を起動して
 > `fabric-data-agent-sdk` を実行し、作成・設定・公開を行います（セッション起動を含め数分かかります）。
 
-> 💡 ポータル UI（`student<番号>` ワークスペース → **新規** → **Data Agent**）でも作成できますが、本ラボは **プロンプト駆動**で進めます。
+> 💡 ポータル UI（登録済みのワークスペース → **新規** → **Data Agent**）でも作成できますが、本ラボは **プロンプト駆動**で進めます。
 
 ---
 
@@ -24,9 +27,9 @@ Data Agent 作成  →  セマンティックモデル接続  →  指示＋例�
 
 ## 7-1. Data Agent を作成してセマンティックモデルに接続する
 
-> 🗣️ **プロンプト**（`student<番号>` は自分のワークスペース名）
+> 🗣️ **プロンプト**
 > ```text
-> student<番号> ワークスペースに taxi_ride_agent という Data Agent を作って、
+> taxi_ride_agent という Data Agent を作って、
 > sm_taxi_warehouse セマンティックモデルをデータソースとして接続して。
 > テーブルは全部選択した状態にして。
 > ```
@@ -215,7 +218,7 @@ agent.publish()                                         # 公開
 | `Few shots not supported for semantic model` | 例題は few-shot ではなく **instructions に DAX 付きで**入れる（7-3 の方法） |
 | 削除直後に同名で作れない（`409`） | 「数分待ってから taxi_ride_agent を作り直して」（名前予約の解放待ち・リトライ） |
 | 回答が的外れ / 数値が出ない | 「taxi_ride_agent の全テーブルを選択し直して」→ `ds.select()`。instructions を見直す |
-| 公開後すぐ応答しない | 数十秒待ってから再質問。`student<番号>` の正しい Agent か確認 |
+| 公開後すぐ応答しない | 「公開状態と接続先の taxi_ride_agent が登録済みのワークスペース内か確認して」。公開直後は数十秒待ってから再質問 |
 
 ---
 
